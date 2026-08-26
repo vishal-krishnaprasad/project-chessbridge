@@ -70,6 +70,25 @@
       backdrop-filter: blur(16px);
     }
 
+    .external-link {
+      display: block;
+      width: fit-content;
+      margin: 0 auto 12px;
+      padding: 8px 14px;
+      border: 1px solid rgba(136, 180, 255, 0.35);
+      border-radius: 8px;
+      background: rgba(136, 180, 255, 0.1);
+      color: #b6d0ff;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .external-link:hover {
+      background: rgba(136, 180, 255, 0.2);
+      color: var(--text);
+    }
+
     nav ul {
       display: flex;
       flex-wrap: wrap;
@@ -244,6 +263,7 @@
   </header>
 
   <nav>
+    <a class="external-link" href="https://discord.gg/6XR8N6FSv9" target="_blank" rel="noopener noreferrer">Join us today!</a>
     <ul role="tablist" aria-label="Portfolio sections">
       <li><button type="button" role="tab" aria-controls="Goals" aria-selected="true" data-tab="Goals">Goals</button></li>
       <li><button type="button" role="tab" aria-controls="Services" aria-selected="false" data-tab="Services">Services</button></li>
@@ -254,13 +274,13 @@
 
   <main>
     <section id="Goals" role="tabpanel" tabindex="0" aria-labelledby="Goals-tab">
-      <h2>About</h2>
-      <p class="about-text">I'm a high school student who has a year of hands-on experience with Java, and basic HTML/CSS. I enjoy solving problems in ways that seem straightforward and not overly complicated. Looking ahead, I plan to study Aerospace Engineering in college and bring a strong software perspective to future systems and simulations. At the same time, I remain passionate about computer science and am still eager to continue growing in both fields.</p>
+      <h2>Bridging the Plateaus</h2>
+      <p class="about-text">We're focused on providing free chess coaching for anyone who wishes to improve their skills and are at any skill level below 2000 elo. Since it's harder to coach above 2000 elo, we are still working on a system. However, there's no restrictions; if you're above this level, you can still join!</p>
     </section>
 
-    <section id="skills" role="tabpanel" tabindex="0" aria-labelledby="skills-tab" hidden>
-      <h2>Skills</h2>
-      <ul class="skills-list">
+    <section id="Services" role="tabpanel" tabindex="0" aria-labelledby="Services-tab" hidden>
+      <h2>Services</h2>
+      <ul class="Services-list">
         <li>HTML & CSS</li>
         <li>JavaScript / TypeScript</li>
         <li>Responsive Web Design</li>
@@ -269,8 +289,8 @@
       </ul>
     </section>
 
-    <section id="projects" role="tabpanel" tabindex="0" aria-labelledby="projects-tab" hidden>
-      <h2>Projects</h2>
+    <section id="Reviews/Statements" role="tabpanel" tabindex="0" aria-labelledby="Reviews/Statements-tab" hidden>
+      <h2>Reviews/Statements</h2>
       <div class="projects-grid">
         <article class="project-card">
           <h3>Project Placeholder 1</h3>
@@ -290,8 +310,8 @@
       </div>
     </section>
 
-    <section id="contact" role="tabpanel" tabindex="0" aria-labelledby="contact-tab" hidden>
-      <h2>Contact</h2>
+    <section id="Get in touch" role="tabpanel" tabindex="0" aria-labelledby="Get in touch-tab" hidden>
+      <h2>Get in touch</h2>
       <p>If you'd like to reach out, please send an email to start a conversation about ideas, collaborations, or opportunities.</p>
       <p><a href="mailto:hello@vishalkrishnaprasad.com">hello@vishalkrishnaprasad.com</a></p>
     </section>
