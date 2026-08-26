@@ -238,6 +238,40 @@
       text-decoration: underline;
     }
 
+    .contact-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 24px;
+      list-style: none;
+    }
+
+    .contact-list li {
+      display: grid;
+      grid-template-columns: 48px 18px 1fr;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+    }
+
+    .contact-image-slot {
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border: 1px dashed rgba(136, 180, 255, 0.5);
+      border-radius: 10px;
+      background: rgba(136, 180, 255, 0.08);
+      color: #8cb2ff;
+      font-size: 0.7rem;
+      text-align: center;
+    }
+
+    .contact-bullet {
+      color: #88b4ff;
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
     footer {
       text-align: center;
       padding: 24px 0 32px;
@@ -266,7 +300,7 @@
     <a class="external-link" href="https://discord.gg/6XR8N6FSv9" target="_blank" rel="noopener noreferrer">Join us today!</a>
     <ul role="tablist" aria-label="Portfolio sections">
       <li><button type="button" role="tab" aria-controls="Goals" aria-selected="true" data-tab="Goals">Goals</button></li>
-      <li><button type="button" role="tab" aria-controls="Services" aria-selected="false" data-tab="Services">Services</button></li>
+      <li><button type="button" role="tab" aria-controls="What we Offer" aria-selected="false" data-tab="What we Offer">What we Offer</button></li>
       <li><button type="button" role="tab" aria-controls="Reviews/Statements" aria-selected="false" data-tab="Reviews/Statements">Reviews/Statements</button></li>
       <li><button type="button" role="tab" aria-controls="Get in touch" aria-selected="false" data-tab="Get in touch">Get in touch</button></li>
     </ul>
@@ -275,12 +309,12 @@
   <main>
     <section id="Goals" role="tabpanel" tabindex="0" aria-labelledby="Goals-tab">
       <h2>Bridging the Plateaus</h2>
-      <p class="about-text">We're focused on providing free chess coaching for anyone who wishes to improve their skills and are at any skill level below 2000 elo. Since it's harder to coach above 2000 elo, we are still working on a system. However, there's no restrictions; if you're above this level, you can still join!</p>
+      <p class="Goals-text">We're focused on providing free chess coaching for anyone who wishes to improve their skills and are at any skill level below 2000 elo. Since it's harder to coach above 2000 elo, we are still working on a system. However, there's no restrictions; if you're above this level, you can still join!</p>
     </section>
 
-    <section id="Services" role="tabpanel" tabindex="0" aria-labelledby="Services-tab" hidden>
-      <h2>Services</h2>
-      <ul class="Services-list">
+    <section id="What we Offer" role="tabpanel" tabindex="0" aria-labelledby="What we Offer-tab" hidden>
+      <h2>What we Offer</h2>
+      <ul class="What we Offer-list">
         <li>HTML & CSS</li>
         <li>JavaScript / TypeScript</li>
         <li>Responsive Web Design</li>
@@ -314,6 +348,12 @@
       <h2>Get in touch</h2>
       <p>If you'd like to reach out, please send an email to start a conversation about ideas, collaborations, or opportunities.</p>
       <p><a href="mailto:hello@vishalkrishnaprasad.com">hello@vishalkrishnaprasad.com</a></p>
+      <ul class="contact-list">
+        <li><span class="contact-image-slot" role="img" aria-label="Image placeholder">Image</span><span class="contact-bullet" aria-hidden="true">&bull;</span><span>Email us with questions or ideas.</span></li>
+        <li><span class="contact-image-slot" role="img" aria-label="Image placeholder">Image</span><span class="contact-bullet" aria-hidden="true">&bull;</span><span>Join the ChessBridge community.</span></li>
+        <li><span class="contact-image-slot" src="https://art.pixilart.com/47700d2e75da.png" alt="discord logo" aria-label="Image placeholder">Image</span><span class="contact-bullet" aria-hidden="true">&bull;</span><span>VK(Founder/Owner)'s Discord ID: vkoffl</span></li>
+        <li><span class="contact-image-slot" src="https://art.pixilart.com/47700d2e75da.png" alt="discord logo" aria-label="Image placeholder">Image</span><span class="contact-bullet" aria-hidden="true">&bull;</span><span>Ashton(Co-Owner)'s Discord ID: bxrbxzz </span></li>
+      </ul>
     </section>
   </main>
 
