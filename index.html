@@ -1,10 +1,281 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Project ChessBridge</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vishal Krishnaprasad | Portfolio</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg-base: #020814;
+      --bg-panel: #09142c;
+      --accent: #1c3a7d;
+      --accent-soft: #223e8e;
+      --text: #ffffff;
+      --muted: #b0c2e0;
+      --border: rgba(255, 255, 255, 0.12);
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: radial-gradient(circle at top, #11234a 0%, var(--bg-base) 60%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    header, nav, main, footer {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 40px 0 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      letter-spacing: -0.05em;
+      margin-bottom: 16px;
+    }
+
+    header p {
+      max-width: 720px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    nav {
+      background: rgba(9, 20, 44, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 14px 20px;
+      margin-bottom: 32px;
+      backdrop-filter: blur(16px);
+    }
+
+    nav ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      list-style: none;
+    }
+
+    nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    nav a:hover {
+      color: #88b4ff;
+      transform: translateY(-1px);
+    }
+
+    main {
+      display: grid;
+      gap: 40px;
+      padding-bottom: 40px;
+    }
+
+    section {
+      background: linear-gradient(180deg, rgba(10, 23, 57, 0.98), rgba(6, 12, 28, 0.98));
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 32px;
+    }
+
+    section h2 {
+      margin-bottom: 18px;
+      font-size: 1.9rem;
+      position: relative;
+    }
+
+    section h2::after {
+      content: "";
+      display: block;
+      width: 60px;
+      height: 4px;
+      margin-top: 10px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .intro p,
+    .about-text,
+    .contact p {
+      max-width: 780px;
+      color: var(--muted);
+    }
+
+    .skills-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .skills-list li {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 14px 16px;
+      list-style: none;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .project-card {
+      background: rgba(14, 26, 58, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 22px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(136, 180, 255, 0.35);
+    }
+
+    .project-card h3 {
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+    }
+
+    .project-card p {
+      color: var(--muted);
+      font-size: 0.98rem;
+      margin-bottom: 16px;
+    }
+
+    .project-card span {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(34, 62, 142, 0.18);
+      color: #b6d0ff;
+      font-size: 0.9rem;
+    }
+
+    .contact p {
+      margin-bottom: 12px;
+    }
+
+    .contact a {
+      color: #8cb2ff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .contact a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px 0 32px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 640px) {
+      nav ul {
+        gap: 10px;
+      }
+
+      section {
+        padding: 24px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>Project ChessBridge</h1>
-    <p>My website is working!</p>
+  <header>
+    <h1>Vishal Krishnaprasad</h1>
+    <p class="intro">A motivated high school student with hands-on experience in Java, HTML/CSS, and game development, committed to building polished digital projects. I enjoy solving problems through clean code and creative design, while balancing technical learning with real-world application. Looking ahead, I plan to study Aerospace Engineering in college and bring a strong software perspective to future systems and simulations. At the same time, I remain passionate about computer science and eager to keep growing in both coding and engineering.</p>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="about">
+      <h2>About</h2>
+      <p class="about-text">I'm a high school student who has a year of hands-on experience with Java, and basic HTML/CSS. I enjoy solving problems in ways that seem straightforward and not overly complicated. Looking ahead, I plan to study Aerospace Engineering in college and bring a strong software perspective to future systems and simulations. At the same time, I remain passionate about computer science and am still eager to continue growing in both fields.</p>
+    </section>
+
+    <section id="skills">
+      <h2>Skills</h2>
+      <ul class="skills-list">
+        <li>HTML & CSS</li>
+        <li>JavaScript / TypeScript</li>
+        <li>Responsive Web Design</li>
+        <li>Git & Version Control</li>
+        <li>React / Front-End Frameworks</li>
+      </ul>
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="projects-grid">
+        <article class="project-card">
+          <h3>Project Placeholder 1</h3>
+          <p>A project card for a future web application, dashboard, or design system showcase.</p>
+          <span>Coming soon</span>
+        </article>
+        <article class="project-card">
+          <h3>Project Placeholder 2</h3>
+          <p>A placeholder entry for the next project that will feature real work and details tomorrow.</p>
+          <span>Coming soon</span>
+        </article>
+        <article class="project-card">
+          <h3>Project Placeholder 3</h3>
+          <p>A space reserved for a project summary, technologies used, and goals achieved.</p>
+          <span>Coming soon</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>If you'd like to reach out, please send an email to start a conversation about ideas, collaborations, or opportunities.</p>
+      <p><a href="mailto:hello@vishalkrishnaprasad.com">hello@vishalkrishnaprasad.com</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 Vishal Krishnaprasad. All rights reserved.</p>
+  </footer>
 </body>
 </html>
