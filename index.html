@@ -42,6 +42,50 @@
       margin: 0 auto;
     }
 
+    .main-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 18px 16px 0;
+    }
+
+    .main-tab {
+      position: relative;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font: inherit;
+      font-weight: 600;
+      padding: 10px 16px;
+    }
+
+    .main-tab::after {
+      position: absolute;
+      right: 16px;
+      bottom: 3px;
+      left: 16px;
+      height: 2px;
+      background: #88b4ff;
+      content: "";
+      transform: scaleX(0);
+      transition: transform 0.2s ease;
+    }
+
+    .main-tab[aria-selected="true"],
+    .main-tab:hover {
+      color: var(--text);
+    }
+
+    .main-tab[aria-selected="true"]::after,
+    .main-tab:hover::after {
+      transform: scaleX(1);
+    }
+
+    .main-panel[hidden] {
+      display: none;
+    }
+
     header {
       padding: 40px 0 20px;
       text-align: center;
@@ -311,6 +355,12 @@
   </style>
 </head>
 <body>
+  <nav class="main-tabs" role="tablist" aria-label="Main pages">
+    <button class="main-tab" type="button" role="tab" aria-controls="about-chessbridge" aria-selected="true" data-main-tab="about-chessbridge">About ChessBridge</button>
+    <button class="main-tab" type="button" role="tab" aria-controls="partner-organizations" aria-selected="false" data-main-tab="partner-organizations">Partner Organizations</button>
+  </nav>
+
+  <div id="about-chessbridge" class="main-panel">
   <header>
     <img class="logo-slot" src="Images/cbLogo.png" alt="chessbridge logo">
     <h1>Project ChessBridge</h1>
@@ -390,14 +440,32 @@
       </ul>
     </section>
   </main>
+  </div>
+
+  <section id="partner-organizations" class="main-panel" role="tabpanel" aria-labelledby="partner-organizations-tab" hidden>
+    <h2>Partner Organizations</h2>
+    <p>Partner organizations will be featured here.</p>
+  </section>
 
   <footer>
     <p>© 2026 Vishal Krishnaprasad. All rights reserved.</p>
   </footer>
 
   <script>
-    const tabs = document.querySelectorAll('[role="tab"]');
-    const panels = document.querySelectorAll('[role="tabpanel"]');
+    const mainTabs = document.querySelectorAll('[data-main-tab]');
+    const tabs = document.querySelectorAll('nav:not(.main-tabs) [role="tab"]');
+    const panels = document.querySelectorAll('main [role="tabpanel"]');
+
+    mainTabs.forEach((tab) => {
+      tab.id = `${tab.dataset.mainTab}-tab`;
+      tab.addEventListener('click', () => {
+        mainTabs.forEach((mainTab) => {
+          const isSelected = mainTab === tab;
+          mainTab.setAttribute('aria-selected', isSelected);
+          document.getElementById(mainTab.dataset.mainTab).hidden = !isSelected;
+        });
+      });
+    });
 
     function showTab(tabId, updateUrl = true) {
       const selectedTab = document.querySelector(`[data-tab="${tabId}"]`) || tabs[0];
