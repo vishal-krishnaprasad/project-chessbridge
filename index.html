@@ -47,6 +47,19 @@
       text-align: center;
     }
 
+    .logo-slot {
+      display: grid;
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 18px;
+      place-items: center;
+      border: 1px dashed rgba(136, 180, 255, 0.5);
+      border-radius: 16px;
+      background: rgba(136, 180, 255, 0.08);
+      color: #8cb2ff;
+      font-size: 0.8rem;
+    }
+
     header h1 {
       font-size: clamp(2.5rem, 5vw, 4rem);
       letter-spacing: -0.05em;
@@ -299,6 +312,7 @@
 </head>
 <body>
   <header>
+    <img class="logo-slot" src="Images/cbLogo.png" alt="chessbridge logo">
     <h1>Project ChessBridge</h1>
     <p class="intro">Free chess coaching for anyone between the range of 100-2000 elo! </p>
   </header>
