@@ -330,6 +330,55 @@
       object-fit: cover;
     }
 
+    .staff-header {
+      margin-top: 28px;
+      margin-bottom: 18px;
+      font-size: 1.65rem;
+    }
+
+    .staff-layout {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+      margin-top: 8px;
+    }
+
+    .staff-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .staff-card h3 {
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+
+    .staff-card p {
+      color: var(--muted);
+    }
+
+    .photo-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .staff-photo-slot {
+      display: grid;
+      place-items: center;
+      min-height: 220px;
+      border: 1px dashed rgba(136, 180, 255, 0.45);
+      border-radius: 18px;
+      background: rgba(136, 180, 255, 0.08);
+      color: #9ebfff;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
     .contact-bullet {
       color: #88b4ff;
       font-size: 1.25rem;
@@ -381,6 +430,23 @@
     <section id="Goals" role="tabpanel" tabindex="0" aria-labelledby="Goals-tab">
       <h2>Bridging the Plateaus</h2>
       <p class="Goals-text">We're focused on providing free chess coaching for anyone who wishes to improve their skills and are at any skill level below 2000 elo. Since it's harder to coach above 2000 elo, we are still working on a system. However, there's no restrictions; if you're above this level, you can still join!</p>
+
+      <h3 class="staff-header">About our staff</h3>
+      <div class="staff-layout">
+        <article class="staff-card">
+          <h3>Founder/Owner and Coach</h3>
+          <p>Hey, my name's Vishal K(I go by VK). I'm rated 1920 over the board as well as 2350+ on chess.com. I recently graduated high school and am now in college studying aerospace engineering. The game of chess has always been a passion for me, and I hope Project ChessBridge can encourage other people to improve their skills and have a fun time!</p>
+        </article>
+        <article class="staff-card">
+          <h3>Co-Owner and Coach</h3>
+          <p>Hey, I'm Ashton. I'm rated 2250 on lichess.org. Similar to VK, I'm also extremely passionate about the game of chess and helping others learn. I'm committed to see Project ChessBridge continue to grow and help players of all levels improve their skills!</p>
+        </article>
+      </div>
+
+      <div class="photo-row">
+        <div class="staff-photo-slot">Picture Slot 1</div>
+        <div class="staff-photo-slot">Picture Slot 2</div>
+      </div>
     </section>
 
     <section id="What we Offer" role="tabpanel" tabindex="0" aria-labelledby="What we Offer-tab" hidden>
