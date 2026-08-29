@@ -9,12 +9,80 @@
       color-scheme: dark;
       --bg-base: #020814;
       --bg-panel: #09142c;
+      --nav-bg: rgba(9, 20, 44, 0.92);
+      --panel-bg-top: rgba(10, 23, 57, 0.98);
+      --panel-bg-bottom: rgba(6, 12, 28, 0.98);
+      --card-bg: rgba(14, 26, 58, 0.95);
+      --soft-surface: rgba(255, 255, 255, 0.05);
       --accent: #1c3a7d;
       --accent-soft: #223e8e;
       --text: #ffffff;
       --muted: #b0c2e0;
       --border: rgba(255, 255, 255, 0.12);
       --shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+      --slot-bg: rgba(136, 180, 255, 0.08);
+      --slot-border: rgba(136, 180, 255, 0.5);
+      --slot-text: #8cb2ff;
+    }
+
+    body.page-maroon {
+      --bg-base: #18070d;
+      --bg-panel: #2d101a;
+      --nav-bg: rgba(38, 10, 18, 0.92);
+      --panel-bg-top: rgba(45, 16, 26, 0.98);
+      --panel-bg-bottom: rgba(24, 7, 13, 0.98);
+      --card-bg: rgba(48, 17, 27, 0.95);
+      --soft-surface: rgba(255, 255, 255, 0.04);
+      --accent: #8b1238;
+      --accent-soft: #ab234f;
+      --text: #fff5f7;
+      --muted: #f2c5d1;
+      --border: rgba(255, 212, 224, 0.18);
+      --shadow: 0 18px 45px rgba(29, 3, 9, 0.38);
+      --slot-bg: rgba(177, 54, 93, 0.14);
+      --slot-border: rgba(232, 149, 176, 0.5);
+      --slot-text: #f7bfd0;
+      background: radial-gradient(circle at top, #4d1724 0%, var(--bg-base) 60%);
+    }
+
+    body.page-black {
+      --bg-base: #000000;
+      --bg-panel: #111111;
+      --nav-bg: rgba(18, 18, 18, 0.92);
+      --panel-bg-top: rgba(18, 18, 18, 0.98);
+      --panel-bg-bottom: rgba(0, 0, 0, 0.98);
+      --card-bg: rgba(30, 30, 30, 0.95);
+      --soft-surface: rgba(255, 255, 255, 0.03);
+      --accent: #ffffff;
+      --accent-soft: #d1d1d1;
+      --text: #f5f5f5;
+      --muted: #d0d0d0;
+      --border: rgba(255, 255, 255, 0.12);
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.4);
+      --slot-bg: rgba(255, 255, 255, 0.05);
+      --slot-border: rgba(255, 255, 255, 0.35);
+      --slot-text: #e6e6e6;
+      background: radial-gradient(circle at top, #1a1a1a 0%, var(--bg-base) 60%);
+    }
+
+    body.page-dark-green {
+      --bg-base: #02110b;
+      --bg-panel: #0a1e18;
+      --nav-bg: rgba(7, 28, 21, 0.92);
+      --panel-bg-top: rgba(9, 31, 24, 0.98);
+      --panel-bg-bottom: rgba(2, 17, 11, 0.98);
+      --card-bg: rgba(12, 38, 29, 0.95);
+      --soft-surface: rgba(255, 255, 255, 0.03);
+      --accent: #74d9a9;
+      --accent-soft: #8ce6b8;
+      --text: #f0fff7;
+      --muted: #c6f0dd;
+      --border: rgba(166, 255, 207, 0.18);
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.36);
+      --slot-bg: rgba(71, 142, 103, 0.13);
+      --slot-border: rgba(166, 255, 207, 0.45);
+      --slot-text: #bcefd3;
+      background: radial-gradient(circle at top, #0f2d22 0%, var(--bg-base) 60%);
     }
 
     * {
@@ -66,7 +134,7 @@
       bottom: 3px;
       left: 16px;
       height: 2px;
-      background: #88b4ff;
+      background: var(--accent);
       content: "";
       transform: scaleX(0);
       transition: transform 0.2s ease;
@@ -97,10 +165,10 @@
       height: 96px;
       margin: 0 auto 18px;
       place-items: center;
-      border: 1px dashed rgba(136, 180, 255, 0.5);
+      border: 1px dashed var(--slot-border);
       border-radius: 16px;
-      background: rgba(136, 180, 255, 0.08);
-      color: #8cb2ff;
+      background: var(--slot-bg);
+      color: var(--slot-text);
       font-size: 0.8rem;
     }
 
@@ -118,7 +186,7 @@
     }
 
     nav {
-      background: rgba(9, 20, 44, 0.92);
+      background: var(--nav-bg);
       border: 1px solid var(--border);
       border-radius: 18px;
       box-shadow: var(--shadow);
@@ -179,11 +247,11 @@
     }
 
     nav button[aria-selected="true"] {
-      border-bottom: 3px solid #88b4ff;
+      border-bottom: 3px solid var(--accent);
     }
 
     nav a:hover {
-      color: #88b4ff;
+      color: var(--accent);
       transform: translateY(-1px);
     }
 
@@ -192,7 +260,7 @@
     }
 
     section {
-      background: linear-gradient(180deg, rgba(10, 23, 57, 0.98), rgba(6, 12, 28, 0.98));
+      background: linear-gradient(180deg, var(--panel-bg-top), var(--panel-bg-bottom));
       border: 1px solid var(--border);
       border-radius: 24px;
       box-shadow: var(--shadow);
@@ -255,7 +323,7 @@
     }
 
     .project-card {
-      background: rgba(14, 26, 58, 0.95);
+      background: var(--card-bg);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 20px;
       padding: 22px;
@@ -321,10 +389,10 @@
       width: 48px;
       height: 48px;
       place-items: center;
-      border: 1px dashed rgba(136, 180, 255, 0.5);
+      border: 1px dashed var(--slot-border);
       border-radius: 10px;
-      background: rgba(136, 180, 255, 0.08);
-      color: #8cb2ff;
+      background: var(--slot-bg);
+      color: var(--slot-text);
       font-size: 0.7rem;
       text-align: center;
       object-fit: cover;
@@ -344,7 +412,7 @@
     }
 
     .staff-card {
-      background: rgba(255, 255, 255, 0.04);
+      background: var(--soft-surface);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 18px;
       padding: 20px;
@@ -370,17 +438,17 @@
       display: grid;
       place-items: center;
       min-height: 220px;
-      border: 1px dashed rgba(136, 180, 255, 0.45);
+      border: 1px dashed var(--slot-border);
       border-radius: 18px;
-      background: rgba(136, 180, 255, 0.08);
-      color: #9ebfff;
+      background: var(--slot-bg);
+      color: var(--slot-text);
       font-weight: 600;
       letter-spacing: 0.04em;
       text-transform: uppercase;
     }
 
     .contact-bullet {
-      color: #88b4ff;
+      color: var(--slot-text);
       font-size: 1.25rem;
       line-height: 1;
     }
@@ -513,7 +581,7 @@
   </section>
 
   <footer>
-    <p>© 2026 Vishal Krishnaprasad. All rights reserved.</p>
+    <p>© 2026 Project ChessBridge. All rights reserved.</p>
   </footer>
 
   <script>
@@ -533,7 +601,8 @@
     });
 
     function showTab(tabId, updateUrl = true) {
-      const selectedTab = document.querySelector(`[data-tab="${tabId}"]`) || tabs[0];
+      const decodedTabId = decodeURIComponent(tabId || '');
+      const selectedTab = document.querySelector(`[data-tab="${decodedTabId}"]`) || tabs[0];
       const selectedPanel = document.getElementById(selectedTab.dataset.tab);
 
       tabs.forEach((tab) => {
@@ -546,6 +615,15 @@
       panels.forEach((panel) => {
         panel.hidden = panel !== selectedPanel;
       });
+
+      document.body.classList.remove('page-maroon', 'page-black', 'page-dark-green');
+      if (decodedTabId === 'What we Offer') {
+        document.body.classList.add('page-maroon');
+      } else if (decodedTabId === 'Reviews/Statements') {
+        document.body.classList.add('page-black');
+      } else if (decodedTabId === 'Get in touch') {
+        document.body.classList.add('page-dark-green');
+      }
 
       if (updateUrl) {
         history.replaceState(null, '', `#${selectedTab.dataset.tab}`);
