@@ -144,7 +144,7 @@
     nav a,
     .external-link,
     .contact-bullet {
-      transition: background 1.4s ease, background-color 1.4s ease, border-color 1.4s ease, color 1.4s ease, box-shadow 1.4s ease, transform 0.2s ease;
+      transition: background 2.2s cubic-bezier(0.22, 1, 0.36, 1), background-color 2.2s cubic-bezier(0.22, 1, 0.36, 1), border-color 2.2s cubic-bezier(0.22, 1, 0.36, 1), color 2.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 2.2s cubic-bezier(0.22, 1, 0.36, 1), transform 0.2s ease;
     }
 
     * {
@@ -167,7 +167,7 @@
       flex-direction: column;
       justify-content: space-between;
       background: var(--bg-base);
-      transition: background-color 1.4s ease, color 1.4s ease;
+      transition: background-color 2.2s cubic-bezier(0.22, 1, 0.36, 1), color 2.2s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     body::before {
@@ -177,7 +177,7 @@
       pointer-events: none;
       background: radial-gradient(circle at top, var(--glow-color), transparent 60%);
       opacity: 0.9;
-      transition: background 1.4s ease, opacity 1.4s ease;
+      transition: background 2.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 2.2s cubic-bezier(0.22, 1, 0.36, 1);
       z-index: 0;
     }
 
@@ -246,7 +246,7 @@
       height: 96px;
       margin: 0 auto 18px;
       place-items: center;
-      border: 1px dashed var(--slot-border);
+      border: 2px solid #ffffff;
       border-radius: 16px;
       background: var(--slot-bg);
       color: var(--slot-text);
@@ -281,7 +281,7 @@
       width: fit-content;
       margin: 0 auto 12px;
       padding: 8px 14px;
-      border: 1px solid rgba(136, 180, 255, 0.35);
+      border: 2px solid #ffffff;
       border-radius: 999px;
       background: rgba(136, 180, 255, 0.1);
       color: #b6d0ff;
@@ -311,14 +311,15 @@
     }
 
     nav button {
-      border: 0;
+      border: 1px solid rgba(255, 255, 255, 0.7);
       background: transparent;
       color: var(--muted);
       cursor: pointer;
       font: inherit;
       font-weight: 600;
       padding: 8px 12px;
-      transition: color 0.2s ease, transform 0.2s ease;
+      border-radius: 10px;
+      transition: color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
     }
 
     nav button:hover,
@@ -673,9 +674,9 @@
     <a class="external-link" href="https://discord.gg/6XR8N6FSv9" target="_blank" rel="noopener noreferrer">Join us today!</a>
     <ul role="tablist" aria-label="Portfolio sections">
       <li><button type="button" role="tab" aria-controls="About Us" aria-selected="true" data-tab="About Us">About Us</button></li>
-      <li><button type="button" role="tab" aria-controls="What we Offer" aria-selected="false" data-tab="What we Offer">What we Offer</button></li>
+      <li><button type="button" role="tab" aria-controls="What We Offer" aria-selected="false" data-tab="What We Offer">What We Offer</button></li>
       <li><button type="button" role="tab" aria-controls="Reviews/Statements" aria-selected="false" data-tab="Reviews/Statements">Reviews/Statements</button></li>
-      <li><button type="button" role="tab" aria-controls="Get in touch" aria-selected="false" data-tab="Get in touch">Get in touch</button></li>
+      <li><button type="button" role="tab" aria-controls="Get in Touch" aria-selected="false" data-tab="Get in Touch">Get in Touch</button></li>
     </ul>
   </nav>
 
@@ -699,9 +700,9 @@
       </div>
     </section>
 
-    <section id="What we Offer" role="tabpanel" tabindex="0" aria-labelledby="What we Offer-tab" hidden>
-      <h2>What we Offer</h2>
-      <ul class="What we Offer-list">
+    <section id="What We Offer" role="tabpanel" tabindex="0" aria-labelledby="What We Offer-tab" hidden>
+      <h2>What We Offer</h2>
+      <ul class="What We Offer-list">
         <li>Tournaments(inter-server as well as regular)</li>
         <li>Free chess coaching</li>
         <li>Paid plans for higher quality coaching</li>
@@ -744,8 +745,8 @@
       </div>
     </section>
 
-    <section id="Get in touch" role="tabpanel" tabindex="0" aria-labelledby="Get in touch-tab" hidden>
-      <h2>Get in touch</h2>
+    <section id="Get in Touch" role="tabpanel" tabindex="0" aria-labelledby="Get in Touch-tab" hidden>
+      <h2>Get in Touch</h2>
       <p>If you'd like to get in touch, please reach out to us via the socials listed below!</p>
       <ul class="contact-list">
         <li><img class="contact-image-slot" src="Images/gmailLogo.png" alt="Gmail logo"><span class="contact-bullet" aria-hidden="true">&bull;</span><span>Email: projectchessbridge@gmail.com.</span></li>
@@ -797,7 +798,7 @@
   </section>
 
   <footer>
-    <p>© 2026 Project ChessBridge. All rights reserved.</p>
+    <p>© 2025 Project ChessBridge. All rights reserved.</p>
   </footer>
 
   <script>
