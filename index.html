@@ -23,9 +23,52 @@
       --slot-bg: rgba(136, 180, 255, 0.08);
       --slot-border: rgba(136, 180, 255, 0.5);
       --slot-text: #8cb2ff;
+      --glow-color: rgba(83, 127, 255, 0.42);
     }
 
-    body.page-maroon {
+    body[data-theme="blue"] {
+      --bg-base: #020814;
+      --bg-panel: #09142c;
+      --nav-bg: rgba(9, 20, 44, 0.92);
+      --panel-bg-top: rgba(10, 23, 57, 0.98);
+      --panel-bg-bottom: rgba(6, 12, 28, 0.98);
+      --card-bg: rgba(14, 26, 58, 0.95);
+      --soft-surface: rgba(255, 255, 255, 0.05);
+      --accent: #1c3a7d;
+      --accent-soft: #223e8e;
+      --text: #ffffff;
+      --muted: #b0c2e0;
+      --border: rgba(255, 255, 255, 0.12);
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+      --slot-bg: rgba(136, 180, 255, 0.08);
+      --slot-border: rgba(136, 180, 255, 0.5);
+      --slot-text: #8cb2ff;
+      --glow-color: rgba(83, 127, 255, 0.42);
+      background: var(--bg-base);
+    }
+
+    body[data-theme="green"] {
+      --bg-base: #03160d;
+      --bg-panel: #112c1f;
+      --nav-bg: rgba(11, 34, 22, 0.92);
+      --panel-bg-top: rgba(15, 42, 28, 0.98);
+      --panel-bg-bottom: rgba(3, 22, 13, 0.98);
+      --card-bg: rgba(18, 53, 32, 0.95);
+      --soft-surface: rgba(255, 255, 255, 0.04);
+      --accent: #2ea76f;
+      --accent-soft: #47c589;
+      --text: #effff5;
+      --muted: #c9f5d9;
+      --border: rgba(200, 255, 220, 0.16);
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+      --slot-bg: rgba(69, 173, 110, 0.12);
+      --slot-border: rgba(170, 250, 193, 0.42);
+      --slot-text: #b7f4ca;
+      --glow-color: rgba(44, 182, 98, 0.38);
+      background: var(--bg-base);
+    }
+
+    body[data-theme="maroon"] {
       --bg-base: #18070d;
       --bg-panel: #2d101a;
       --nav-bg: rgba(38, 10, 18, 0.92);
@@ -42,10 +85,11 @@
       --slot-bg: rgba(177, 54, 93, 0.14);
       --slot-border: rgba(232, 149, 176, 0.5);
       --slot-text: #f7bfd0;
-      background: radial-gradient(circle at top, #4d1724 0%, var(--bg-base) 60%);
+      --glow-color: rgba(176, 42, 84, 0.35);
+      background: var(--bg-base);
     }
 
-    body.page-black {
+    body[data-theme="black"] {
       --bg-base: #000000;
       --bg-panel: #111111;
       --nav-bg: rgba(18, 18, 18, 0.92);
@@ -62,10 +106,11 @@
       --slot-bg: rgba(255, 255, 255, 0.05);
       --slot-border: rgba(255, 255, 255, 0.35);
       --slot-text: #e6e6e6;
-      background: radial-gradient(circle at top, #1a1a1a 0%, var(--bg-base) 60%);
+      --glow-color: rgba(255, 255, 255, 0.12);
+      background: var(--bg-base);
     }
 
-    body.page-dark-green {
+    body[data-theme="dark-green"] {
       --bg-base: #02110b;
       --bg-panel: #0a1e18;
       --nav-bg: rgba(7, 28, 21, 0.92);
@@ -82,7 +127,24 @@
       --slot-bg: rgba(71, 142, 103, 0.13);
       --slot-border: rgba(166, 255, 207, 0.45);
       --slot-text: #bcefd3;
-      background: radial-gradient(circle at top, #0f2d22 0%, var(--bg-base) 60%);
+      --glow-color: rgba(76, 199, 142, 0.28);
+      background: var(--bg-base);
+    }
+
+    html, body,
+    nav,
+    section,
+    .project-card,
+    .staff-card,
+    .logo-slot,
+    .contact-image-slot,
+    .staff-photo-slot,
+    .main-tab,
+    nav button,
+    nav a,
+    .external-link,
+    .contact-bullet {
+      transition: background 1.4s ease, background-color 1.4s ease, border-color 1.4s ease, color 1.4s ease, box-shadow 1.4s ease, transform 0.2s ease;
     }
 
     * {
@@ -100,9 +162,28 @@
     }
 
     body {
+      position: relative;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      background: var(--bg-base);
+      transition: background-color 1.4s ease, color 1.4s ease;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at top, var(--glow-color), transparent 60%);
+      opacity: 0.9;
+      transition: background 1.4s ease, opacity 1.4s ease;
+      z-index: 0;
+    }
+
+    body > * {
+      position: relative;
+      z-index: 1;
     }
 
     header, nav, main, footer {
@@ -616,19 +697,24 @@
         panel.hidden = panel !== selectedPanel;
       });
 
-      document.body.classList.remove('page-maroon', 'page-black', 'page-dark-green');
-      if (decodedTabId === 'What we Offer') {
-        document.body.classList.add('page-maroon');
-      } else if (decodedTabId === 'Reviews/Statements') {
-        document.body.classList.add('page-black');
-      } else if (decodedTabId === 'Get in touch') {
-        document.body.classList.add('page-dark-green');
-      }
-
       if (updateUrl) {
         history.replaceState(null, '', `#${selectedTab.dataset.tab}`);
       }
     }
+
+    const themeSequence = ['blue', 'green', 'maroon', 'black'];
+    let currentThemeIndex = 0;
+
+    function applyTheme(index) {
+      currentThemeIndex = index;
+      document.body.dataset.theme = themeSequence[index];
+    }
+
+    applyTheme(0);
+    setInterval(() => {
+      const nextIndex = (currentThemeIndex + 1) % themeSequence.length;
+      applyTheme(nextIndex);
+    }, 15000);
 
     tabs.forEach((tab, index) => {
       tab.addEventListener('click', () => showTab(tab.dataset.tab));
