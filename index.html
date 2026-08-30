@@ -460,10 +460,18 @@
 
     .contact-list li {
       display: grid;
-      grid-template-columns: 48px 18px 1fr;
+      grid-template-columns: 48px 18px minmax(0, 1fr);
       align-items: center;
       gap: 12px;
       color: var(--muted);
+      min-width: 0;
+    }
+
+    .contact-list li > span:last-child {
+      min-width: 0;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      font-size: 0.92rem;
     }
 
     .contact-image-slot {
@@ -647,6 +655,36 @@
         grid-template-columns: 1fr;
       }
 
+      .contact-list li {
+        grid-template-columns: 42px 14px minmax(0, 1fr);
+        gap: 8px;
+      }
+
+      .contact-list li > span:last-child {
+        font-size: 0.8rem;
+      }
+
+      .contact-image-slot {
+        width: 42px;
+        height: 42px;
+      }
+
+      .partner-card {
+        grid-template-columns: 1fr;
+      }
+
+      .partner-image-slot {
+        width: min(100%, 280px);
+        max-width: 280px;
+        justify-self: center;
+        min-height: 0;
+        aspect-ratio: 1 / 1;
+      }
+
+      .partner-copy {
+        width: 100%;
+      }
+
       .photo-row {
         grid-template-columns: 1fr;
       }
@@ -694,7 +732,7 @@
         </article>
         <article class="staff-card">
           <h3>Co-Owner and Coach</h3>
-          <p>Hey, I'm Ashton. I'm rated 2250 on lichess.org. Similar to VK, I'm also extremely passionate about the game of chess and helping others learn. I'm committed to see Project ChessBridge continue to grow and help players of all levels improve their game and love the game that I love!</p>
+          <p>Hey, I'm Ashton. I'm rated 2250 on lichess.org. Similar to VK, I'm also extremely passionate about the game of chess and helping others learn. I'm committed to helping Project ChessBridge continue to grow and making sure our members love the game that I love!</p>
           <img src="Images/infmyth.jpg" alt="Co-Owner and Coach photo">
         </article>
       </div>
