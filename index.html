@@ -311,6 +311,7 @@
     }
 
     nav button {
+      position: relative;
       border: none;
       background: transparent;
       color: var(--muted);
@@ -322,14 +323,27 @@
       transition: color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
     }
 
+    nav button::after {
+      position: absolute;
+      right: 12px;
+      bottom: 2px;
+      left: 12px;
+      height: 2px;
+      background: var(--accent);
+      content: "";
+      transform: scaleX(0);
+      transition: transform 0.2s ease;
+    }
+
     nav button:hover,
     nav button[aria-selected="true"] {
       color: var(--text);
       transform: translateY(-1px);
     }
 
-    nav button[aria-selected="true"] {
-      border-bottom: 3px solid var(--accent);
+    nav button[aria-selected="true"]::after,
+    nav button:hover::after {
+      transform: scaleX(1);
     }
 
     nav a:hover {
@@ -392,19 +406,25 @@
     }
 
     .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(220px, 1fr));
+      display: flex;
       gap: 18px;
       margin-top: 20px;
-      min-width: 696px;
+      min-width: max-content;
+      padding-bottom: 8px;
     }
 
     .projects-grid-wrapper {
       overflow-x: auto;
+      overflow-y: hidden;
       margin-top: 20px;
+      scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
     }
 
     .project-card {
+      flex: 0 0 min(320px, 78vw);
+      display: flex;
+      flex-direction: column;
       background: var(--card-bg);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 20px;
@@ -428,13 +448,28 @@
       margin-bottom: 16px;
     }
 
+    .review-image-slot {
+      display: block;
+      width: 100%;
+      max-width: 120px;
+      height: 72px;
+      margin: 0 auto 16px;
+      object-fit: cover;
+      object-position: left center;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--slot-bg);
+    }
+
     .project-card span {
       display: inline-block;
+      margin-top: auto;
       padding: 6px 12px;
       border-radius: 999px;
       background: rgba(34, 62, 142, 0.18);
       color: #b6d0ff;
       font-size: 0.9rem;
+      width: fit-content;
     }
 
     .contact p {
@@ -639,6 +674,49 @@
       transform: translateY(-1px);
     }
 
+    .what-we-offer-list {
+      display: grid;
+      gap: 22px;
+      margin-top: 18px;
+      padding-left: 1.2rem;
+      list-style: disc;
+    }
+
+    .what-we-offer-list li {
+      display: grid;
+      gap: 12px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .offer-figure {
+      margin: 0;
+      width: min(100%, 420px);
+    }
+
+    .offer-image-slot {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 250px;
+      object-fit: contain;
+      object-position: center;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: var(--slot-bg);
+      box-shadow: 0 12px 28px rgba(1, 5, 18, 0.18);
+    }
+
+    .offer-caption {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.5;
+      text-align: center;
+      font-style: italic;
+      letter-spacing: 0.01em;
+    }
+
     footer {
       text-align: center;
       padding: 24px 0 32px;
@@ -740,12 +818,42 @@
 
     <section id="What We Offer" role="tabpanel" tabindex="0" aria-labelledby="What We Offer-tab" hidden>
       <h2>What We Offer</h2>
-      <ul class="What We Offer-list">
-        <li>Tournaments(inter-server as well as regular)</li>
-        <li>Free chess coaching</li>
-        <li>Paid plans for higher quality coaching</li>
-        <li>Community with over 400 members</li>
-        <li>Puzzles and other fun activities!</li>
+      <ul class="what-we-offer-list">
+        <li>
+          <span>Tournaments(usually regular, occasional inter-servers too)</span>
+          <figure class="offer-figure">
+            <img class="offer-image-slot" src="Images/tourneyex.png" alt="ChessBridge Swiss tournament poster">
+            <figcaption class="offer-caption">ChessBridge Swiss 8/30/26</figcaption>
+          </figure>
+        </li>
+        <li>
+          <span>Free chess coaching</span>
+          <figure class="offer-figure">
+            <img class="offer-image-slot" src="Images/cbLogo.png" alt="Free chess coaching illustration">
+            <figcaption class="offer-caption">Free coaching preview</figcaption>
+          </figure>
+        </li>
+        <li>
+          <span>Paid plans for higher quality coaching</span>
+          <figure class="offer-figure">
+            <img class="offer-image-slot" src="Images/cbLogo.png" alt="Premium coaching illustration">
+            <figcaption class="offer-caption">Premium coaching options</figcaption>
+          </figure>
+        </li>
+        <li>
+          <span>Community with over 400 members</span>
+          <figure class="offer-figure">
+            <img class="offer-image-slot" src="Images/chats.png" alt="Community illustration">
+            <figcaption class="offer-caption">Member community snapshot</figcaption>
+          </figure>
+        </li>
+        <li>
+          <span>Economy and other fun activities!</span>
+          <figure class="offer-figure">
+            <img class="offer-image-slot" src="Images/economy.png" alt="Economy and activities illustration">
+            <figcaption class="offer-caption">Fun activities and economy</figcaption>
+          </figure>
+        </li>
       </ul>
     </section>
 
@@ -756,26 +864,31 @@
         <div class="projects-grid">
         <article class="project-card">
           <h3>Larry, joined 1.5 years ago</h3>
-          <p>I came into Project ChessBridge in a plateu looking for coaching and advice. The community are people who actually engage with your games and point out the things you cant see on you own. It's a big reason I improved to where i am now. If you're stuck and can't work out why, this is where I'd start.</p>
-          <span>Elo increase: 1800 to 2100</span>
+          <img class="review-image-slot" src="Images/larrygraph.png" alt="Larry review image">
+          <p>I joined Project ChessBridge while in a plateau looking for coaching and advice. The community is filled with people who actually engage with your games and point out the things you're unable to see on you own. It's a big reason I improved to where I am now. If you're stuck and can't work out why, this is where I'd start.</p>
+          <span>Elo increase: 1500 to 2100</span>
         </article>
         <article class="project-card">
           <h3>Richard, joined 1.5 years ago</h3>
+          <img class="review-image-slot" src="Images/richardgraph.jpg" alt="Richard review image">
           <p>I like Project ChessBridge not just for the information they have to offer, but the community and effort surrounding the server. As soon as I joined, I got out of that deadzone in my chess and was able to get to 800 rather quickly from 350. Project ChessBridge helps you view chess different as a whole.</p>
           <span>Elo increase: 350 to 800</span>
         </article>
         <article class="project-card">
-          <h3>Grace, joined 2 months ago</h3>
-          <p>Project ChessBridge has been a welcoming place and has been helpful for my chess. The tournament was fun, and the coaching session I had really gave me new concepts to try. I’d definitely recommend joining this server.</p>
-          <span>Elo increase: too soon to tell</span>
+          <h3>Grace, joined 4 months ago</h3>
+          <img class="review-image-slot" src="Images/gracegraph.png" alt="Grace review image">
+          <p>Project ChessBridge has been a welcoming place and has been helpful for my chess. The tournaments were fun, and the coaching session I had really gave me new concepts to try. I’d definitely recommend joining this server!</p>
+          <span>Elo increase: 500 to 800</span>
         </article>
         <article class="project-card">
           <h3>Anonymous Reviewer, joined 2 years ago</h3>
+          <img class="review-image-slot" src="Images/shahzagraph.png" alt="Anonymous review 1 image">
           <p>This community is by far the best chess community I've ever been to, every member is friendly, approachable, and you can play with them anytime, i went from 400 elo from when I joined the server and now I'm so close in hitting 800. I'm very thankful that I found this server :). </p>
           <span>Elo increase: 400 to 800</span>
         </article>
         <article class="project-card">
           <h3>Anonymous Reviewer, joined 2 years ago</h3>
+          <img class="review-image-slot" src="Images/popeyegraph.jpg" alt="Anonymous review 2 image">
           <p>Project ChessBridge is an amazing server, I was there when it all started. All the coaches and staff are kind and willing to help when asked. I have gained 300 elo since I joined the server, but I couldn’t achieve that without the help of my fellow peers, thank you for having me on Project ChessBridge! </p>
           <span>Elo increase: 100 to 500</span>
         </article>
