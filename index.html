@@ -405,20 +405,60 @@
       list-style: none;
     }
 
+    .reviews-scroll-shell {
+      position: relative;
+      margin-top: 20px;
+    }
+
+    .reviews-scroll-controls {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .review-scroll-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      background: rgba(9, 20, 44, 0.72);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 1.2rem;
+      line-height: 1;
+      pointer-events: auto;
+      transition: background 0.2s ease, transform 0.2s ease;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    }
+
+    .review-scroll-btn:hover {
+      background: rgba(20, 32, 60, 0.9);
+      transform: translateY(-1px);
+    }
+
     .projects-grid {
       display: flex;
       gap: 18px;
-      margin-top: 20px;
       min-width: max-content;
-      padding-bottom: 8px;
+      padding: 8px 52px 8px;
     }
 
     .projects-grid-wrapper {
       overflow-x: auto;
       overflow-y: hidden;
-      margin-top: 20px;
       scrollbar-width: thin;
       -webkit-overflow-scrolling: touch;
+      touch-action: pan-x;
+      scroll-snap-type: x proximity;
+      outline: none;
     }
 
     .project-card {
@@ -454,12 +494,20 @@
       max-width: 120px;
       height: 72px;
       margin: 0 auto 16px;
-      object-fit: cover;
-      object-position: left center;
+      object-fit: contain;
+      object-position: center;
       border-radius: 12px;
       border: 1px solid rgba(255, 255, 255, 0.1);
       background: var(--slot-bg);
       cursor: pointer;
+    }
+
+    .project-card:nth-child(2) .review-image-slot {
+      object-position: center;
+    }
+
+    .project-card:last-child .review-image-slot {
+      object-position: center;
     }
 
     .lightbox-overlay {
@@ -908,8 +956,13 @@
     <section id="Reviews/Statements" role="tabpanel" tabindex="0" aria-labelledby="Reviews/Statements-tab" hidden>
       <h2>Reviews/Statements</h2>
       <p>Some reviewers featured here prefer to have their identities anonymous.</p>
-      <div class="projects-grid-wrapper">
-        <div class="projects-grid">
+      <div class="reviews-scroll-shell">
+        <div class="reviews-scroll-controls" aria-label="Review slider controls">
+          <button class="review-scroll-btn" type="button" data-direction="left" aria-label="Scroll reviews left">&#8592;</button>
+          <button class="review-scroll-btn" type="button" data-direction="right" aria-label="Scroll reviews right">&#8594;</button>
+        </div>
+        <div class="projects-grid-wrapper" tabindex="0" aria-label="Scrollable reviews carousel">
+          <div class="projects-grid">
         <article class="project-card">
           <h3>Larry, joined 1.5 years ago</h3>
           <img class="review-image-slot" src="Images/larrygraph.png" alt="Larry review image">
@@ -940,6 +993,7 @@
           <p>Project ChessBridge is an amazing server, I was there when it all started. All the coaches and staff are kind and willing to help when asked. I have gained 300 elo since I joined the server, but I couldn’t achieve that without the help of my fellow peers, thank you for having me on Project ChessBridge! </p>
           <span>Elo increase: 100 to 500</span>
         </article>
+          </div>
         </div>
       </div>
     </section>
@@ -1050,6 +1104,40 @@
       const nextIndex = (currentThemeIndex + 1) % themeSequence.length;
       applyTheme(nextIndex);
     }, 15000);
+
+    const reviewSlider = document.querySelector('.projects-grid-wrapper');
+    const reviewButtons = document.querySelectorAll('.review-scroll-btn');
+
+    function scrollReviews(direction) {
+      if (!reviewSlider) return;
+      const firstCard = reviewSlider.querySelector('.project-card');
+      const gap = 18;
+      const amount = firstCard ? firstCard.getBoundingClientRect().width + gap : 320;
+      reviewSlider.scrollBy({
+        left: direction * amount,
+        behavior: 'smooth'
+      });
+    }
+
+    reviewButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const direction = button.dataset.direction === 'right' ? 1 : -1;
+        scrollReviews(direction);
+      });
+    });
+
+    if (reviewSlider) {
+      reviewSlider.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          scrollReviews(1);
+        }
+        if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          scrollReviews(-1);
+        }
+      });
+    }
 
     tabs.forEach((tab, index) => {
       tab.addEventListener('click', () => showTab(tab.dataset.tab));
