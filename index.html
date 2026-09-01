@@ -1121,8 +1121,6 @@
     const reviewButtons = document.querySelectorAll('.review-scroll-btn');
 
     function centerCarousel() {
-      // Only center on desktop (PC), not on mobile
-      if (window.innerWidth <= 768) return;
       if (!reviewSlider) return;
       const grid = reviewSlider.querySelector('.projects-grid');
       if (!grid) return;
