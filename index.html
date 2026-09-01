@@ -459,6 +459,20 @@
       touch-action: pan-x;
       scroll-snap-type: x proximity;
       outline: none;
+      scroll-padding-left: 50%;
+      scroll-padding-right: 50%;
+    }
+
+    @media (max-width: 768px) {
+      .projects-grid {
+        padding: 8px 50px 8px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .projects-grid {
+        padding: 8px 45px 8px;
+      }
     }
 
     .project-card {
@@ -1108,6 +1122,17 @@
     const reviewSlider = document.querySelector('.projects-grid-wrapper');
     const reviewButtons = document.querySelectorAll('.review-scroll-btn');
 
+    function centerCarousel() {
+      if (!reviewSlider) return;
+      const grid = reviewSlider.querySelector('.projects-grid');
+      if (!grid) return;
+      const gridLeft = grid.offsetLeft;
+      const gridWidth = grid.scrollWidth;
+      const wrapperWidth = reviewSlider.clientWidth;
+      const centerScroll = (gridWidth - wrapperWidth) / 2;
+      reviewSlider.scrollLeft = Math.max(0, centerScroll);
+    }
+
     function scrollReviews(direction) {
       if (!reviewSlider) return;
       const firstCard = reviewSlider.querySelector('.project-card');
@@ -1125,6 +1150,20 @@
         scrollReviews(direction);
       });
     });
+
+    // Center carousel on load
+    window.addEventListener('load', () => {
+      setTimeout(centerCarousel, 100);
+    });
+    
+    // Also center if DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(centerCarousel, 100);
+      });
+    } else {
+      setTimeout(centerCarousel, 100);
+    }
 
     if (reviewSlider) {
       reviewSlider.addEventListener('keydown', (event) => {
