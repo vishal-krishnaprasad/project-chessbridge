@@ -459,8 +459,6 @@
       touch-action: pan-x;
       scroll-snap-type: x proximity;
       outline: none;
-      scroll-padding-left: 50%;
-      scroll-padding-right: 50%;
     }
 
     @media (max-width: 768px) {
@@ -1123,10 +1121,11 @@
     const reviewButtons = document.querySelectorAll('.review-scroll-btn');
 
     function centerCarousel() {
+      // Only center on desktop (PC), not on mobile
+      if (window.innerWidth <= 768) return;
       if (!reviewSlider) return;
       const grid = reviewSlider.querySelector('.projects-grid');
       if (!grid) return;
-      const gridLeft = grid.offsetLeft;
       const gridWidth = grid.scrollWidth;
       const wrapperWidth = reviewSlider.clientWidth;
       const centerScroll = (gridWidth - wrapperWidth) / 2;
