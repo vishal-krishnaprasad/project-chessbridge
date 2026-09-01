@@ -1085,6 +1085,9 @@
     function showTab(tabId, updateUrl = true) {
       const decodedTabId = decodeURIComponent(tabId || '');
       const selectedTab = document.querySelector(`[data-tab="${decodedTabId}"]`) || tabs[0];
+      
+      if (!selectedTab) return;
+      
       const selectedPanel = document.getElementById(selectedTab.dataset.tab);
 
       tabs.forEach((tab) => {
@@ -1097,6 +1100,11 @@
       panels.forEach((panel) => {
         panel.hidden = panel !== selectedPanel;
       });
+
+      // Re-center carousel when Reviews/Statements tab is shown
+      if (selectedPanel && selectedPanel.id === 'Reviews/Statements') {
+        setTimeout(centerCarousel, 50);
+      }
 
       if (updateUrl) {
         history.replaceState(null, '', `#${selectedTab.dataset.tab}`);
