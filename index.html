@@ -1083,7 +1083,16 @@
           mainTab.setAttribute('aria-selected', isSelected);
           document.getElementById(mainTab.dataset.mainTab).hidden = !isSelected;
         });
+        history.replaceState(null, '', `#${tab.dataset.mainTab}`);
       });
+    });
+
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash.slice(1);
+      const mainTab = document.querySelector(`[data-main-tab="${hash}"]`);
+      if (mainTab) {
+        mainTab.click();
+      }
     });
 
     function showTab(tabId, updateUrl = true) {
