@@ -704,13 +704,19 @@
     .partner-image-slot {
       display: block;
       width: 100%;
-      min-height: 180px;
       aspect-ratio: 1 / 1;
       object-fit: cover;
       object-position: center;
       border: 1px dashed var(--slot-border);
       border-radius: 16px;
       background: var(--slot-bg);
+    }
+
+    .chesspath-image-slot {
+      width: min(100%, 280px);
+      height: min(280px, calc(100vw - 48px));
+      object-fit: contain;
+      justify-self: start;
     }
 
     .partner-copy {
@@ -1157,12 +1163,10 @@
       </article>
 
       <article class="partner-card">
-        <img class="partner-image-slot" src="https://chesspath.pro/assets/watercolor.jpeg" alt="ChessPath project image">
+        <img class="partner-image-slot chesspath-image-slot" src="Images/cpplogo.png" alt="ChessPath.Pro logo">
         <div class="partner-copy">
           <h3>ChessPath.Pro</h3>
           <p>ChessPath.Pro is an opening explorer and training system built for players who want to analyze positions, build a personalized repertoire, and improve through smarter study. It brings together crowd-sourced popularity and win-rate data from millions of games with deep cached engine evaluations and predictive tools so you can explore any opening, any position, and understand what lines are practical, effective, and instructive.</p>
-          <p>Whether you're preparing for tournaments or breaking through a plateau, ChessPath helps you organize your repertoire, study the ideas behind openings, and train with adaptive spaced repetition. With tools for deep evaluation, move-quality metrics, and a free distributed-computing model, it turns opening study into a structured, trainer-like workflow instead of a static database.</p>
-
           <div class="partner-discord">
             <div class="partner-discord-title">Owner's Discord</div>
             <div class="partner-discord-row">
