@@ -47,18 +47,6 @@
       background: var(--bg-base);
     }
 
-    html, body,
-    nav,
-    section,
-    .project-card,
-    .staff-card,
-    .logo-slot,
-    .contact-image-slot,
-    .staff-photo-slot,
-    .main-tab,
-    nav button,
-    nav a,
-    .external-link,
     .contact-bullet {
       transition: background 2.2s cubic-bezier(0.22, 1, 0.36, 1), background-color 2.2s cubic-bezier(0.22, 1, 0.36, 1), border-color 2.2s cubic-bezier(0.22, 1, 0.36, 1), color 2.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 2.2s cubic-bezier(0.22, 1, 0.36, 1), transform 0.2s ease;
     }
@@ -112,6 +100,11 @@
       justify-content: center;
       gap: 8px;
       padding: 18px 16px 0;
+    }
+
+    .main-tabs .external-link {
+      margin: 0 0 0 auto;
+      text-align: center;
     }
 
     .main-tab {
@@ -322,19 +315,15 @@
     }
 
     .reviews-scroll-shell {
-      position: relative;
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr) 44px;
+      align-items: center;
+      gap: 8px;
       margin-top: 20px;
     }
 
     .reviews-scroll-controls {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 10px;
-      pointer-events: none;
-      z-index: 2;
+      display: contents;
     }
 
     .review-scroll-btn {
@@ -355,6 +344,33 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
     }
 
+    .review-scroll-btn:first-child {
+      grid-column: 1;
+    }
+
+    .review-scroll-btn:last-child {
+      grid-column: 3;
+    }
+
+    .review-scroll-btn::before {
+      font-family: Arial, sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .review-scroll-btn:first-child::before {
+      content: "←";
+    }
+
+    .review-scroll-btn:last-child::before {
+      content: "→";
+    }
+
+    .review-scroll-btn {
+      font-size: 0;
+    }
+
     .review-scroll-btn:hover {
       background: rgba(20, 32, 60, 0.9);
       transform: translateY(-1px);
@@ -364,10 +380,11 @@
       display: flex;
       gap: 18px;
       min-width: max-content;
-      padding: 8px 52px 8px;
+      padding: 8px 0;
     }
 
     .projects-grid-wrapper {
+      grid-column: 2;
       overflow-x: auto;
       overflow-y: hidden;
       scrollbar-width: thin;
@@ -378,14 +395,39 @@
     }
 
     @media (max-width: 768px) {
+      .main-tabs {
+        flex-wrap: wrap;
+      }
+
+      .main-tabs .external-link {
+        flex: 0 0 auto;
+        width: fit-content;
+        margin: 8px auto 0;
+        text-align: center;
+      }
+
+      .reviews-scroll-shell {
+        grid-template-columns: 34px minmax(0, 1fr) 34px;
+        gap: 4px;
+      }
+
+      .review-scroll-btn {
+        width: 32px;
+        height: 32px;
+      }
+
+      .review-scroll-btn::before {
+        font-size: 1.2rem;
+      }
+
       .projects-grid {
-        padding: 8px 50px 8px;
+        padding: 8px 0;
       }
     }
 
     @media (max-width: 480px) {
       .projects-grid {
-        padding: 8px 45px 8px;
+        padding: 8px 0;
       }
     }
 
