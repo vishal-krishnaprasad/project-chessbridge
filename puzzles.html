@@ -316,14 +316,14 @@
             line-height: 1;
         }
 
-        .hint-button: hover,
-        .hint-button: focus-visible {
+        .hint-button:hover,
+        .hint-button:focus-visible {
             background: rgba(20,184,166,0.16);
         }
 
-        .hint-button: disabled {
+        .hint-button:disabled {
             cursor: default;
-            opacity: 0.6;
+            opacity:0.6;
         }
 
         .move-dot,
@@ -356,6 +356,46 @@
             margin-top: 12px;
             color: #c6d7f9;
             font-size: 14px;
+        }
+
+        .auto-next-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            color: #c6d7f9;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .next-puzzle-button {
+            display: block;
+            margin: 12px auto 0;
+            padding: 9px 18px;
+            border: 1px solid rgba(75,124,255,0.8);
+            border-radius: 8px;
+            background: rgba(14,26,58,0.95);
+            color: #f5f9ff;
+            cursor: pointer;
+            font: inherit;
+        }
+
+        .next-puzzle-button[hidden] {
+            display: none;
+        }
+
+        .next-puzzle-button:hover,
+        .next-puzzle-button:focus-visible {
+            background: rgba(75,124,255,0.16);
+        }
+
+        .auto-next-control input {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            accent-color: #4b7cff;
+            cursor: pointer;
         }
 
         #completion-message {
@@ -473,6 +513,14 @@
         <div id="progress" class="progress">
             Puzzle 1 of 3
         </div>
+
+        <label class = "auto-next-control" for = "auto-next-checkbox">
+            <input id = "auto-next-checkbox" type = "checkbox" checked>
+            <span>Instantly start the next puzzle</span>
+        </label>
+        <button id = "next-puzzle-button" class = "next-puzzle-button" type = "button" hidden>
+            Next Puzzle
+        </button>
 
     </div>
 
@@ -638,6 +686,9 @@
     let selectedSquare = null;
     let selectedLegalMoves = [];
     let hintUsed = false;
+    let wrongAttemptCount = 0;
+    let stuckMessageTimer = null;
+    let puzzleCompleted = false;
 
     /*
     completedTiers is intentionally stored only in JavaScript
@@ -663,6 +714,8 @@
     const statusElement = document.getElementById("status");
     const progressElement = document.getElementById("progress");
     const boardWrapper = document.getElementById("board-wrapper");
+    const autoNextCheckbox = document.getElementById("auto-next-checkbox");
+    const nextPuzzleButton = document.getElementById("next-puzzle-button");
     const completionMessage = document.getElementById("completion-message");
     const promotionModal = document.getElementById("promotion-modal");
     const hintButton = document.getElementById("hint-button");
@@ -681,9 +734,22 @@
 
 
     function setStatus(message, type = "info") {
-        statusElement.textContent = message;
+        if (stuckMessageTimer !== null) {
+            window.clearTimeout(stuckMessageTimer);
+            stuckMessageTimer = null;
+        }
 
+        statusElement.textContent = message;
         statusElement.className = "status " + type;
+    }
+
+    function showStuckMessage() {
+        setStatus("Stuck? Project ChessBridge can help you improve!", "info");
+        stuckMessageTimer = window.setTimeout(function() {
+            stuckMessageTimer = null;
+            setStatus("Find the best move.", "info");
+        
+        }, 3000);
     }
 
     function flashFeedback(type) {
@@ -995,6 +1061,15 @@ hintButton.addEventListener("click", showHint);
         selectedLegalMoves = [];
         clearMoveHighlights();
         resetHint();
+        nextPuzzleButton.hidden = true;
+        puzzleCompleted = false;
+
+        wrongAttemptCount = 0;
+
+        if (stuckMessageTimer !== null) {
+            window.clearTimeout(stuckMessageTimer);
+            stuckMessageTimer = null;
+        }
 
         document.removeEventListener("mousedown", handleBoardClick, true);
         document.addEventListener("mousedown", handleBoardClick, true);
@@ -1054,7 +1129,13 @@ hintButton.addEventListener("click", showHint);
         clearMoveHighlights();
 
         if (attemptedUCI !== expectedMove) {
-            setStatus("Not quite. Try again.", "incorrect");
+            wrongAttemptCount++;
+
+            if (wrongAttemptCount === 3) {
+                showStuckMessage();
+            } else {
+                setStatus("Not quite. Try again.", "incorrect");
+            }
             flashFeedback("incorrect");
             if (!fromDrag) {
                 board.position(game.fen());
@@ -1087,7 +1168,10 @@ hintButton.addEventListener("click", showHint);
         if (currentSolutionIndex >= puzzle.solution.length) {
             setStatus("Correct! Puzzle solved.", "correct");
             flashFeedback("complete");
-            window.setTimeout(function() { finishPuzzle(); }, 700);
+            puzzleCompleted = true;
+            window.setTimeout(function() { 
+                finishPuzzle(); 
+            }, 700);
             return;
         }
 
@@ -1272,6 +1356,8 @@ hintButton.addEventListener("click", showHint);
 
     function finishPuzzle() {
 
+        puzzleCompleted = true;
+
         if (opponentMoveTimer !== null) {
             window.clearTimeout(opponentMoveTimer);
             opponentMoveTimer = null;
@@ -1286,13 +1372,17 @@ hintButton.addEventListener("click", showHint);
 
         if (currentPuzzleIndex < tier.puzzles.length - 1) {
 
-            currentPuzzleIndex++;
+                if (!autoNextCheckbox.checked) {
+                    nextPuzzleButton.hidden = false;
+                    setStatus("Puzzle complete. Click the button to move on.", "info");
+                    return;
+                }
 
+            currentPuzzleIndex++;
             loadPuzzle();
 
             return;
         }
-
 
         /*
         We have completed the final puzzle
@@ -1468,6 +1558,25 @@ hintButton.addEventListener("click", showHint);
 
     });
 
+    nextPuzzleButton.addEventListener("click", function() {
+        const tier = puzzleData[currentTier];
+
+        if (autoNextCheckbox.checked || currentPuzzleIndex >= tier.puzzles.length - 1) {
+            return;
+        }
+
+        currentPuzzleIndex++;
+        nextPuzzleButton.hidden = true;
+        loadPuzzle();
+    });
+
+    autoNextCheckbox.addEventListener("change", function() {
+        if (autoNextCheckbox.checked) {
+            nextPuzzleButton.hidden = true;
+        } else if (puzzleCompleted) {
+            nextPuzzleButton.hidden = false;
+        }
+    });
 
     /*
     ============================================================
