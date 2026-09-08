@@ -171,6 +171,14 @@
             font-weight: 600;
         }
 
+        .promotion-option img {
+            display: block;
+            width: 52px;
+            height: 52px;
+            margin: 0 auto;
+            object-fit: contain;
+        }
+
         .promotion-option:hover,
         .promotion-option:focus-visible {
             border-color: #4b7cff;
@@ -331,10 +339,10 @@
                 <h2 id="promotion-title">Choose a promotion</h2>
                 <p>Select the piece for your pawn.</p>
                 <div class="promotion-options">
-                    <button class="promotion-option" type="button" data-promotion="q">Queen</button>
-                    <button class="promotion-option" type="button" data-promotion="r">Rook</button>
-                    <button class="promotion-option" type="button" data-promotion="b">Bishop</button>
-                    <button class="promotion-option" type="button" data-promotion="n">Knight</button>
+                    <button class="promotion-option" type="button" data-promotion="q" aria-label="Queen"><img alt="Queen"></button>
+                    <button class="promotion-option" type="button" data-promotion="r" aria-label="Rook"><img alt="Rook"></button>
+                    <button class="promotion-option" type="button" data-promotion="b" aria-label="Bishop"><img alt="Bishop"></button>
+                    <button class="promotion-option" type="button" data-promotion="n" aria-label="Knight"><img alt="Knight"></button>
                 </div>
                 <button class="promotion-cancel" type="button">Cancel</button>
             </div>
@@ -488,10 +496,7 @@
                         "g7g8b",
                         "d8f6",
                         "g8e6",
-                        "c8d8",
-                        "a8b7",
-                        "d8e7",
-                        "a7a8q"
+                        "c8d8"
                     ]
                 }
 
@@ -542,6 +547,7 @@
     const completionMessage = document.getElementById("completion-message");
     const promotionModal = document.getElementById("promotion-modal");
     const promotionCancel = promotionModal.querySelector(".promotion-cancel");
+    const promotionOptions = promotionModal.querySelectorAll(".promotion-option");
 
     let pendingPromotion = null;
     let opponentMoveTimer = null;
@@ -558,6 +564,15 @@
         statusElement.textContent = message;
 
         statusElement.className = "status " + type;
+    }
+
+    function updatePromotionOptions(playerColor) {
+        promotionOptions.forEach(function(option) {
+            const piece = playerColor + option.dataset.promotion.toUpperCase();
+            const image = option.querySelector("img");
+
+            image.src = "https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@1.0.0/website/img/chesspieces/wikipedia/" + piece + ".png";
+        });
     }
 
     function clearMoveHighlights() {
@@ -782,6 +797,8 @@
         closePromotionSelector();
 
         const orientation = puzzle.playerColor === "b" ? "black" : "white";
+
+        updatePromotionOptions(puzzle.playerColor);
 
         tierTitle.textContent = tier.title;
         progressElement.textContent =
@@ -1070,6 +1087,11 @@
     */
 
     function finishPuzzle() {
+
+        if (opponentMoveTimer !== null) {
+            window.clearTimeout(opponentMoveTimer);
+            opponentMoveTimer = null;
+        }
 
         const tier = puzzleData[currentTier];
 
