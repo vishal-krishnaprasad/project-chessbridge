@@ -974,10 +974,8 @@ hintButton.addEventListener("click", showHint);
     let currentSolutionIndex = 0;
 
     function handleBoardClick(event) {
-        if (event.type === "mousedown" || event.type === "touchend") {
-            if (event.button !== 0) {
+        if (event.type === "mousedown" && event.button !== 0) {
                 return;
-            }
         }
 
         const squareElement = event.target.closest("#board .square-55d63");
