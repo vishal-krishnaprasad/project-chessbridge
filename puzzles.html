@@ -344,9 +344,9 @@
                     fen: "8/1p4BP/6P1/p1P1K3/8/8/P1k5/5q2 b - - 0 1",
                     playerColor: "b",
                     solution: [
-                        "f1h1",
+                        "f1a1",
                         "e5e6",
-                        "h8b2"
+                        "a1g7"
                     ]
                 },
 
@@ -897,6 +897,15 @@
         */
 
         tierSelector.style.display = "block";
+
+        const nextTier = tierSelector.value;
+
+        if (nextTier !== currentTier && puzzleData[nextTier]) {
+            currentTier = nextTier;
+            currentPuzzleIndex = 0;
+            loadPuzzle();
+            return;
+        }
 
         setStatus(
             "Tier complete! Choose another difficulty.",
