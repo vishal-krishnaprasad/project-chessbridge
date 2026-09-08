@@ -168,6 +168,9 @@
             max-width: 450px;
             margin: 0 auto;
             touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-user-drag: none;
         }
         
         #promotion-modal {
@@ -258,6 +261,9 @@
         #board {
             width: 100%;
             touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-user-drag: none;
         }
 
         .status {
@@ -1017,6 +1023,12 @@ hintButton.addEventListener("click", showHint);
         }
     }
 
+    function preventBoardScroll(event) {
+        if (event.target.closest("#board")) {
+            event.preventDefault();
+        }
+    }
+
 
     function loadPuzzle() {
 
@@ -1073,8 +1085,8 @@ hintButton.addEventListener("click", showHint);
             stuckMessageTimer = null;
         }
 
-        document.removeEventListener("mousedown", handleBoardClick, true);
-        document.addEventListener("mousedown", handleBoardClick, true);
+        document.removeEventListener("click", handleBoardClick, true);
+        document.addEventListener("click", handleBoardClick, true);
 
         setStatus("Find the best move.", "info");
 
@@ -1082,6 +1094,11 @@ hintButton.addEventListener("click", showHint);
             board.resize();
         }, 50);
     }
+
+    document.addEventListener("touchmove", preventBoardScroll, {
+        capture: true;
+        passive: false;
+    });
 
 
     function onDragStart(source, piece) {
