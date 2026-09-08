@@ -1330,6 +1330,11 @@
       }
     });
 
+    const initialMainTab = document.querySelector(`[data-main-tab="${window.location.hash.slice(1)}"]`);
+    if (initialMainTab) {
+      initialMainTab.click();
+    }
+
     window.addEventListener('hashchange', () => showTab(window.location.hash.slice(1), false));
     showTab(window.location.hash.slice(1), false);
   </script>
