@@ -974,8 +974,10 @@ hintButton.addEventListener("click", showHint);
     let currentSolutionIndex = 0;
 
     function handleBoardClick(event) {
-        if (event.button !== 0) {
-            return;
+        if (event.type === "mousedown" || event.type === "touchend") {
+            if (event.button !== 0) {
+                return;
+            }
         }
 
         const squareElement = event.target.closest("#board .square-55d63");
@@ -1023,11 +1025,7 @@ hintButton.addEventListener("click", showHint);
         }
     }
 
-    function preventBoardScroll(event) {
-        if (event.target.closest("#board")) {
-            event.preventDefault();
-        }
-    }
+    
 
 
     function loadPuzzle() {
@@ -1085,8 +1083,11 @@ hintButton.addEventListener("click", showHint);
             stuckMessageTimer = null;
         }
 
-        document.removeEventListener("click", handleBoardClick, true);
-        document.addEventListener("click", handleBoardClick, true);
+        document.removeEventListener("mousedown", handleBoardClick, true);
+        document.addEventListener("mousedown", handleBoardClick, true);
+
+        document.removeEventListener("touchend", handleBoardClick, true);
+        document.addEventListener("touchend", handleBoardClick, true);
 
         setStatus("Find the best move.", "info");
 
@@ -1095,10 +1096,7 @@ hintButton.addEventListener("click", showHint);
         }, 50);
     }
 
-    document.addEventListener("touchmove", preventBoardScroll, {
-        capture: true;
-        passive: false;
-    });
+    
 
 
     function onDragStart(source, piece) {
