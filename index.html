@@ -964,7 +964,6 @@
     <ul role="tablist" aria-label="Portfolio sections">
       <li><button type="button" role="tab" aria-controls="About Us" aria-selected="true" data-tab="About Us">About Us</button></li>
       <li><button type="button" role="tab" aria-controls="What We Offer" aria-selected="false" data-tab="What We Offer">What We Offer</button></li>
-      <li><button type="button" role="tab" aria-controls="ChessPath" aria-selected="false" data-tab="ChessPath">ChessPath.Pro</button></li>
       <li><button type="button" role="tab" aria-controls="Reviews/Statements" aria-selected="false" data-tab="Reviews/Statements">Reviews/Statements</button></li>
       <li><button type="button" role="tab" aria-controls="Get in Touch" aria-selected="false" data-tab="Get in Touch">Get in Touch</button></li>
     </ul>
@@ -1076,13 +1075,6 @@
       </div>
     </section>
 
-    <section id="ChessPath" role="tabpanel" tabindex="0" aria-labelledby="ChessPath-tab" hidden>
-      <h2>Train with ChessPath!</h2>
-      <p>Open the ChessPath explorer to review opening ideas, study a seeded position, and keep your training focused on practical improvement.</p>
-      <a class="external-link chesspath-link" href="https://chesspath.pro/" target="_blank" rel="noopener noreferrer">Open ChessPath in a new tab</a>
-      <iframe class="chesspath-embed" src="https://chesspath.pro/" title="ChessPath opening explorer" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-    </section>
-
     <section id="Get in Touch" role="tabpanel" tabindex="0" aria-labelledby="Get in Touch-tab" hidden>
       <h2>Get in Touch</h2>
       <p>If you'd like to get in touch, please reach out via the socials listed below!</p>
@@ -1143,16 +1135,31 @@
   </section>
 
   <section id="resources" class="main-panel resources-panel" role="tabpanel" aria-labelledby="resources-tab" hidden>
+    <nav class = "resource-tabs" role = "tablist" aria-label = "Resource sections">
+      <button id = "resource-chesspath-pro-tab" type = "button" role = "tab" aria-controls = "resource-chesspath-pro" aria-selected = "false"
+      data-resource-tab = "resource-chesspath-pro" >ChessPath.Pro</button>
+      <button id = "resource-tactical-puzzles-tab" type = "button" role = "tab" aria-controls = "resource-tactical-puzzles" aria-selected = "true"
+      data-resource-tab = "resource-tactical-puzzles">Tactical Puzzles</button>
+    </nav>
+    <section id = "resource-chesspath-pro" role = "tabpanel" tabindex = "0" aria-labelledby = "resource-chesspath-pro-tab" hidden>
+      <h2>Train with ChessPath!</h2>
+      <p>Open the ChessPath explorer to review opening ideas, study a seeded position, and keep your training focused on practical improvement.</p>
+      <a class = "external-link chesspath-link" href = "https://chesspath.pro/" target = "_blank" rel = "noopener noreferrer">
+        Open ChessPath in a new tab
+      </a>
+      <iframe class = "chesspath-embed" src = "https://chesspath.pro/" title = "ChessPath opening explorer" loading = "lazy" referrerpolicy = "strict-origin-when-cross-origin"></iframe>
+    </section>
+    <section id = "resource-tactical-puzzles" role = "tabpanel" tabindex = "0" aria-labelledby = "resource-tactical-puzzles-tab">
     <iframe class="resources-frame" src="puzzles.html" title="Chess puzzles" loading="lazy"></iframe>
   </section>
-
+</section>
   <footer>
     <p>© 2024 Project ChessBridge. All rights reserved.</p>
   </footer>
 
   <script>
     const mainTabs = document.querySelectorAll('[data-main-tab]');
-    const tabs = document.querySelectorAll('nav:not(.main-tabs) [role="tab"]');
+    const tabs = document.querySelectorAll('#about-chessbridge nav [role = "tab"]');
     const panels = document.querySelectorAll('main [role="tabpanel"]');
 
     mainTabs.forEach((tab) => {
@@ -1276,6 +1283,54 @@
         showTab(tabs[nextIndex].dataset.tab);
       });
     });
+
+    const resourceTabs = document.querySelectorAll('[data-resource-tab]');
+    const resourcePanels = document.querySelectorAll('#resources > [role = "tabpanel"]');
+
+    function showResourceTab(tabId) {
+      const selectedTab = document.querySelector(`[data-resource-tab = "${tabId}"]`) || resourceTabs[0];
+
+      if (!selectedTab) {
+        return;
+      }
+
+      const selectedPanel = document.getElementById(selectedTab.dataset.resourceTab);
+
+      resourceTabs.forEach((tab) => {
+        const isSelected = tab === selectedTab;
+
+        tab.setAttribute('aria-selected', isSelected);
+        tab.tabIndex = isSelected ? 0 : -1;
+      });
+
+      resourcePanels.forEach((panel) => {
+        panel.hidden = panel !== selectedPanel;
+      });
+    }
+
+    resourceTabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => {
+        showResourceTab(tab.dataset.resourceTab);
+      });
+
+      tab.addEventListener('keydown', (event) => {
+        if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') {
+          return;
+        }
+
+        event.preventDefault();
+
+        const nextIndex = event.key === 'ArrowRight'
+        ? (index + 1) % resourceTabs.length
+        : (index - 1 + resourceTabs.length) % resourceTabs.length;
+
+        resourceTabs[nextIndex].focus();
+
+        showResourceTab(resourceTabs[nextIndex].dataset.resourceTab);
+      });
+    });
+
+    showResourceTab('resource-tactical-puzzles');
 
     const lightboxOverlay = document.createElement('div');
     lightboxOverlay.className = 'lightbox-overlay';
