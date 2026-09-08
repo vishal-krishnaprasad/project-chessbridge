@@ -20,8 +20,8 @@
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
-            background: #f5f7fa;
-            color: #1f2937;
+            background: radial-gradient(circle at top, rgba(75, 124, 255, 0.2), transparent 45%), #020814;
+            color: #f5f9ff;
             min-height: 100vh;
         }
 
@@ -40,43 +40,52 @@
         .header h1 {
             margin: 0 0 10px;
             font-size: clamp(28px, 5vw, 42px);
-            color: #111827;
+            color: #f5f9ff;
         }
 
         .header p {
             margin: 0;
-            color: #6b7280;
+            color: #c6d7f9;
             font-size: 16px;
         }
 
         .puzzle-container {
-            background: white;
+            background: rgba(9, 20, 44, 0.95);
+            border: 1px solid rgba(170, 204, 255, 0.18);
             border-radius: 18px;
             padding: 28px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
         }
 
         .tier-area {
             display: flex;
+            flex-direction: column;
             justify-content: center;
+            align-items: center;
             margin-bottom: 24px;
         }
 
+        .tier-label {
+            margin-bottom: 8px;
+            color: #c6d7f9;
+            font-size: 14px;
+        }
+
         #tierSelector {
-            display: none;
+            display: block;
             width: 100%;
             max-width: 350px;
             padding: 12px 14px;
-            border: 1px solid #d1d5db;
+            border: 1px solid rgba(163, 195, 255, 0.62);
             border-radius: 10px;
-            background: white;
-            color: #111827;
+            background: rgba(14, 26, 58, 0.95);
+            color: #f5f9ff;
             font-size: 16px;
             cursor: pointer;
         }
 
         #tierSelector:focus {
-            outline: 2px solid #2563eb;
+            outline: 2px solid #4b7cff;
             outline-offset: 2px;
         }
 
@@ -88,12 +97,12 @@
         .puzzle-info h2 {
             margin: 0 0 8px;
             font-size: 24px;
-            color: #111827;
+            color: #f5f9ff;
         }
 
         .puzzle-info p {
             margin: 0;
-            color: #6b7280;
+            color: #c6d7f9;
             font-size: 15px;
         }
 
@@ -122,20 +131,21 @@
             width: min(100%, 380px);
             padding: 24px;
             border-radius: 16px;
-            background: white;
+            background: rgba(9, 20, 44, 0.98);
+            border: 1px solid rgba(170, 204, 255, 0.18);
             box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
             text-align: center;
         }
 
         .promotion-dialog h2 {
             margin: 0 0 6px;
-            color: #111827;
+            color: #f5f9ff;
             font-size: 22px;
         }
 
         .promotion-dialog p {
             margin: 0 0 18px;
-            color: #6b7280;
+            color: #c6d7f9;
             font-size: 14px;
         }
 
@@ -147,10 +157,10 @@
 
         .promotion-option,
         .promotion-cancel {
-            border: 1px solid #d1d5db;
+            border: 1px solid rgba(163, 195, 255, 0.62);
             border-radius: 10px;
-            background: #f9fafb;
-            color: #111827;
+            background: rgba(14, 26, 58, 0.95);
+            color: #f5f9ff;
             cursor: pointer;
             font: inherit;
         }
@@ -163,20 +173,20 @@
 
         .promotion-option:hover,
         .promotion-option:focus-visible {
-            border-color: #2563eb;
-            background: #eff6ff;
+            border-color: #4b7cff;
+            background: rgba(75, 124, 255, 0.14);
         }
 
         .promotion-cancel {
             margin-top: 16px;
             padding: 9px 16px;
-            color: #4b5563;
+            color: #dfeaff;
             background: transparent;
         }
 
         .promotion-cancel:hover,
         .promotion-cancel:focus-visible {
-            background: #f3f4f6;
+            background: rgba(255, 255, 255, 0.04);
         }
 
         #board {
@@ -192,21 +202,54 @@
         }
 
         .status.correct {
-            color: #15803d;
+            color: #7ce7a8;
         }
 
         .status.incorrect {
-            color: #dc2626;
+            color: #ff8a8a;
         }
 
         .status.info {
-            color: #2563eb;
+            color: #9ebeff;
+        }
+
+        .square-55d63 {
+            position: relative;
+        }
+
+        .square-55d63.selected-square {
+            box-shadow: inset 0 0 0 4px rgba(75, 124, 255, 0.9);
+        }
+
+        .move-dot,
+        .capture-dot {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .move-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: rgba(75, 124, 255, 0.8);
+            box-shadow: 0 0 0 2px rgba(17, 24, 39, 0.2);
+        }
+
+        .capture-dot {
+            width: 68%;
+            height: 68%;
+            border-radius: 50%;
+            border: 6px solid rgba(75, 124, 255, 0.9);
+            background: rgba(17, 24, 39, 0.08);
         }
 
         .progress {
             text-align: center;
             margin-top: 12px;
-            color: #6b7280;
+            color: #c6d7f9;
             font-size: 14px;
         }
 
@@ -221,12 +264,12 @@
             max-width: 650px;
             font-size: clamp(28px, 6vw, 48px);
             line-height: 1.15;
-            color: #111827;
+            color: #f5f9ff;
         }
 
         #completion-message p {
             margin-top: 16px;
-            color: #6b7280;
+            color: #c6d7f9;
             font-size: 17px;
         }
 
@@ -264,6 +307,7 @@
 
         <!-- This dropdown appears after the first tier is completed -->
         <div class="tier-area">
+            <label class="tier-label" for="tierSelector">Pick a rating category</label>
             <select id="tierSelector">
                 <option value="under1000">Under 1000</option>
                 <option value="1000-2000">1000–2000</option>
@@ -410,8 +454,8 @@
             puzzles: [
 
                 {
-                    fen: "r4rk1/pb3pb1/1p4pp/8/1PNN4/1Q4Pn/3BPP1P/1R3RK1 w - - 3 4",
-                    playerColor: "w",
+                    fen: "r4rk1/pb3pb1/1p4pp/3n4/1PNNq3/1Q4P1/3BPP1P/1R3RK1 b - - 3 14",
+                    playerColor: "b",
                     solution: [
                         "e4g2",
                         "g1g2",
@@ -468,6 +512,8 @@
 
     let game = null;
     let board = null;
+    let selectedSquare = null;
+    let selectedLegalMoves = [];
 
     /*
     completedTiers is intentionally stored only in JavaScript
@@ -498,6 +544,7 @@
     const promotionCancel = promotionModal.querySelector(".promotion-cancel");
 
     let pendingPromotion = null;
+    let opponentMoveTimer = null;
 
 
     /*
@@ -511,6 +558,116 @@
         statusElement.textContent = message;
 
         statusElement.className = "status " + type;
+    }
+
+    function clearMoveHighlights() {
+        const squares = document.querySelectorAll("#board .square-55d63");
+
+        squares.forEach(function(square) {
+            square.classList.remove("selected-square");
+            square.querySelectorAll(".move-dot, .capture-dot").forEach(function(marker) {
+                marker.remove();
+            });
+        });
+    }
+
+    function updateMoveHighlights() {
+        clearMoveHighlights();
+
+        if (!selectedSquare) {
+            return;
+        }
+
+        const selectedEl = document.querySelector(`#board .square-55d63[data-square="${selectedSquare}"]`);
+
+        if (selectedEl) {
+            selectedEl.classList.add("selected-square");
+        }
+
+        selectedLegalMoves.forEach(function(targetSquare) {
+            const targetEl = document.querySelector(`#board .square-55d63[data-square="${targetSquare}"]`);
+
+            if (!targetEl) {
+                return;
+            }
+
+            const targetPiece = game.get(targetSquare);
+            const marker = document.createElement("span");
+            marker.className = targetPiece ? "capture-dot" : "move-dot";
+            targetEl.appendChild(marker);
+        });
+    }
+
+    function selectSquare(square) {
+        if (!square) {
+            selectedSquare = null;
+            selectedLegalMoves = [];
+            updateMoveHighlights();
+            return;
+        }
+
+        const puzzle = puzzleData[currentTier].puzzles[currentPuzzleIndex];
+        const piece = game.get(square);
+
+        if (piece && piece.color !== puzzle.playerColor) {
+            selectedSquare = null;
+            selectedLegalMoves = [];
+            updateMoveHighlights();
+            return;
+        }
+
+        const legalMoves = game.moves({ square: square, verbose: true }).map(function(move) {
+            return move.to;
+        });
+
+        if (!piece || legalMoves.length === 0) {
+            selectedSquare = null;
+            selectedLegalMoves = [];
+            updateMoveHighlights();
+            return;
+        }
+
+        selectedSquare = square;
+        selectedLegalMoves = legalMoves;
+        updateMoveHighlights();
+    }
+
+    function handlePlayerMove(source, target, fromDrag) {
+        if (!source || !target || source === target) {
+            selectSquare(null);
+            return false;
+        }
+
+        const puzzle = puzzleData[currentTier].puzzles[currentPuzzleIndex];
+
+        if (game.turn() !== puzzle.playerColor) {
+            return false;
+        }
+
+        const piece = game.get(source);
+        const isPromotion = piece &&
+            piece.type === "p" &&
+            ((piece.color === "w" && target.charAt(1) === "8") ||
+             (piece.color === "b" && target.charAt(1) === "1"));
+
+        if (isPromotion) {
+            const legalMove = game.moves({ square: source, verbose: true }).some(function(move) {
+                return move.to === target;
+            });
+
+            if (!legalMove) {
+                setStatus("That move is not legal.", "incorrect");
+                return false;
+            }
+
+            pendingPromotion = { source: source, target: target };
+            promotionModal.classList.add("is-visible");
+            promotionModal.querySelector(".promotion-option").focus();
+            return true;
+        }
+
+            finalizePlayerMove(source, target, undefined, fromDrag);
+        return true;
     }
 
 
@@ -558,6 +715,56 @@
 
     let currentSolutionIndex = 0;
 
+    function handleBoardClick(event) {
+        if (event.button !== 0) {
+            return;
+        }
+
+        const squareElement = event.target.closest("#board .square-55d63");
+
+        if (!squareElement) {
+            return;
+        }
+
+        const square = squareElement.dataset.square;
+
+        if (!square || !game) {
+            return;
+        }
+
+        const puzzle = puzzleData[currentTier].puzzles[currentPuzzleIndex];
+
+        if (currentSolutionIndex >= puzzle.solution.length) {
+            return;
+        }
+
+        if (game.turn() !== puzzle.playerColor) {
+            return;
+        }
+
+        if (selectedSquare && selectedSquare === square) {
+            selectSquare(null);
+            return;
+        }
+
+        if (selectedSquare && selectedLegalMoves.includes(square)) {
+            handlePlayerMove(selectedSquare, square, false);
+            selectSquare(null);
+            return;
+        }
+
+        const piece = game.get(square);
+
+        if (piece && piece.color === puzzle.playerColor) {
+            selectSquare(square);
+            return;
+        }
+
+        if (selectedSquare) {
+            selectSquare(null);
+        }
+    }
+
 
     function loadPuzzle() {
 
@@ -588,11 +795,22 @@
             position: puzzle.fen,
             orientation: orientation,
             draggable: true,
+            appearSpeed: 0,
+            moveSpeed: 0,
+            snapbackSpeed: 0,
+            snapSpeed: 0,
             pieceTheme: "https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@1.0.0/website/img/chesspieces/wikipedia/{piece}.png",
             onDragStart: onDragStart,
             onDrop: onDrop,
             onSnapEnd: onSnapEnd
         });
+
+        selectedSquare = null;
+        selectedLegalMoves = [];
+        clearMoveHighlights();
+
+        document.removeEventListener("mousedown", handleBoardClick, true);
+        document.addEventListener("mousedown", handleBoardClick, true);
 
         setStatus("Find the best move.", "info");
 
@@ -623,45 +841,35 @@
 
 
     function onDrop(source, target) {
-
-        const piece = game.get(source);
-        const isPromotion = piece &&
-            piece.type === "p" &&
-            ((piece.color === "w" && target.charAt(1) === "8") ||
-             (piece.color === "b" && target.charAt(1) === "1"));
-
-        if (isPromotion) {
-            const legalMove = game.moves({ square: source, verbose: true }).some(function(move) {
-                return move.to === target;
-            });
-
-            if (!legalMove) {
-                setStatus("That move is not legal.", "incorrect");
-                return "snapback";
-            }
-
-            pendingPromotion = { source: source, target: target };
-            promotionModal.classList.add("is-visible");
-            promotionModal.querySelector(".promotion-option").focus();
-
+        if (source === target) {
             return "snapback";
         }
 
-        return finalizePlayerMove(source, target);
+        selectSquare(null);
+
+        if (handlePlayerMove(source, target, true)) {
+            return true;
+        }
+
+        return "snapback";
     }
 
 
-    function finalizePlayerMove(source, target, promotion) {
+    function finalizePlayerMove(source, target, promotion, fromDrag) {
 
         const puzzle = puzzleData[currentTier].puzzles[currentPuzzleIndex];
         const expectedMove = getExpectedMove();
         const attemptedUCI = source + target + (promotion || "");
 
         closePromotionSelector();
+        selectedSquare = null;
+        selectedLegalMoves = [];
+        clearMoveHighlights();
 
         if (attemptedUCI !== expectedMove) {
             setStatus("Not quite. Try again.", "incorrect");
             board.position(game.fen());
+            updateMoveHighlights();
             return "snapback";
         }
 
@@ -670,9 +878,13 @@
         if (!move) {
             setStatus("That move is not legal.", "incorrect");
             board.position(game.fen());
+            updateMoveHighlights();
             return "snapback";
         }
 
+        if (!fromDrag) {
+            board.position(game.fen(), false);
+        }
         currentSolutionIndex++;
 
         if (currentSolutionIndex >= puzzle.solution.length) {
@@ -682,7 +894,19 @@
         }
 
         setStatus("Correct! Watch the response.", "correct");
-        window.setTimeout(function() { makeOpponentMove(); }, 500);
+        scheduleOpponentMove();
+    }
+
+
+    function scheduleOpponentMove() {
+        if (opponentMoveTimer !== null) {
+            window.clearTimeout(opponentMoveTimer);
+        }
+
+        opponentMoveTimer = window.setTimeout(function() {
+            opponentMoveTimer = null;
+            makeOpponentMove();
+        }, 500);
     }
 
 
@@ -697,7 +921,7 @@
 
         if (option && pendingPromotion) {
             const move = pendingPromotion;
-            finalizePlayerMove(move.source, move.target, option.dataset.promotion);
+            finalizePlayerMove(move.source, move.target, option.dataset.promotion, false);
         }
 
         if (event.target === promotionModal) {
@@ -797,7 +1021,7 @@
         Update the physical board.
         */
 
-        board.position(game.fen());
+        board.position(game.fen(), false);
 
 
         /*
@@ -834,6 +1058,7 @@
     function onSnapEnd() {
         if (board && game) {
             board.position(game.fen());
+            updateMoveHighlights();
         }
     }
 
