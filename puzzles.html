@@ -57,6 +57,63 @@
             box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
         }
 
+        #board-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        #board-wrapper.flash-correct::after,
+        #board-wrapper.flash-incorrect::after,
+        #board-wrapper.flash-complete::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        #board-wrapper.flash-correct::after {
+            animation: puzzle-flash-correct 250ms ease-out;
+        }
+
+        #board-wrapper.flash-incorrect::after {
+            animation: puzzle-flash-incorrect 250ms ease-out;
+        }
+
+        #board-wrapper.flash-complete::after {
+            animation: puzzle-flash-complete 600ms ease-out;
+        }
+
+        @keyframes puzzle-flash-correct {
+            0%, 100% {
+                background-color: transparent;
+            }
+
+            35% {
+                background-color: rgba(35, 150, 70, 0.58);
+            }
+        }
+
+        @keyframes puzzle-flash-incorrect {
+            0%, 100% {
+                background-color: transparent;
+            }
+
+            35% {
+                background-color: rgba(185, 35, 45, 0.58);
+            }
+        }
+
+        @keyframes puzzle-flash-complete {
+            0%, 18%, 54%, 100% {
+                background-color: transparent;
+            }
+
+            9%, 45% {
+                background-color: rgba(35, 150, 70, 0.58);
+            }
+        }
+
         .tier-area {
             display: flex;
             flex-direction: column;
@@ -111,7 +168,7 @@
             max-width: 600px;
             margin: 0 auto;
         }
-
+        
         #promotion-modal {
             position: fixed;
             inset: 0;
@@ -229,6 +286,46 @@
             box-shadow: inset 0 0 0 4px rgba(75, 124, 255, 0.9);
         }
 
+        .square-55d63.hint-square {
+            box-shadow: inset 0 0 0 4px rgba(20, 184, 166, 0.95);
+        }
+
+        .hint-control {
+            display: flex;
+            align-items: center;
+            justofy-content: center;
+            gap: 8px;
+            margin-top: 16px;
+            color: #c6d7f9;
+            font-size: 15px;
+        }
+
+        .hint-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center; 
+            width: 42px; 
+            height: 38px; 
+            padding: 0; 
+            border: 1px solid rgba(20, 184, 166, 0.85); 
+            border-radius: 8px; 
+            background: rgba(14, 26, 58, 0.95); 
+            color: #f5f9ff; 
+            cursor: pointer; 
+            font-size: 20px; 
+            line-height: 1;
+        }
+
+        .hint-button: hover,
+        .hint-button: focus-visible {
+            background: rgba(20,184,166,0.16);
+        }
+
+        .hint-button: disabled {
+            cursor: default;
+            opacity: 0.6;
+        }
+
         .move-dot,
         .capture-dot {
             position: absolute;
@@ -298,6 +395,20 @@
             .header {
                 margin-bottom: 20px;
             }
+
+            .square-55d63.selected-square {
+                box-shadow: inset 0 0 0 2px rgba(75, 124, 255, 0.9);
+            }
+
+            .move-dot {
+                width: 14px;
+                height: 14px;
+                box-shadow: 0 0 0 1px rgba(17, 24, 39, 0.2);
+            }
+
+            .capture-dot {
+                border-width: 3px;
+            }
         }
     </style>
 </head>
@@ -332,6 +443,13 @@
 
         <div id="board-wrapper">
             <div id="board"></div>
+        </div>
+        <div id= "hint-control" class= "hint-control">
+            <button id = "hint-button" class = "hint-button"
+            type= "button" aria-label = "Need a hint">
+            💡
+            </button>
+            <span>Need a hint?</span>
         </div>
 
         <div id="promotion-modal" role="dialog" aria-modal="true" aria-labelledby="promotion-title">
@@ -519,6 +637,7 @@
     let board = null;
     let selectedSquare = null;
     let selectedLegalMoves = [];
+    let hintUsed = false;
 
     /*
     completedTiers is intentionally stored only in JavaScript
@@ -543,9 +662,10 @@
     const tierTitle = document.getElementById("tierTitle");
     const statusElement = document.getElementById("status");
     const progressElement = document.getElementById("progress");
-    const puzzleContainer = document.getElementById("puzzleContainer");
+    const boardWrapper = document.getElementById("board-wrapper");
     const completionMessage = document.getElementById("completion-message");
     const promotionModal = document.getElementById("promotion-modal");
+    const hintButton = document.getElementById("hint-button");
     const promotionCancel = promotionModal.querySelector(".promotion-cancel");
     const promotionOptions = promotionModal.querySelectorAll(".promotion-option");
 
@@ -564,6 +684,17 @@
         statusElement.textContent = message;
 
         statusElement.className = "status " + type;
+    }
+
+    function flashFeedback(type) {
+        const flashClasses = ["flash-correct", "flash-incorrect", "flash-complete"];
+
+        flashClasses.forEach(function(className) {
+            boardWrapper.classList.remove(className);
+        });
+
+        void boardWrapper.offsetWidth;
+        boardWrapper.classList.add("flash-" + type);
     }
 
     function updatePromotionOptions(playerColor) {
@@ -585,6 +716,43 @@
             });
         });
     }
+
+    function clearHintHighlight() {
+        document.querySelectorAll("#board .hint-square").forEach(function(square) {
+            square.classList.remove("hint-square");
+        });
+    }
+
+    function resetHint() {
+        clearHintHighlight();
+        hintUsed = false;
+        hintButton.disabled = false;
+    }
+
+    function showHint() {
+        if (hintUsed || !game) {
+            return;
+        }
+
+        const expectedMove = getExpectedMove();
+
+        if (!expectedMove) {
+            return;
+        }
+
+        const sourceSquare = expectedMove.substring(0, 2);
+        const sourceElement = document.querySelector('#board .square-55d63[data-square ="' + sourceSquare + '"]');
+
+    if (!sourceElement || !game.get(sourceSquare)) {
+        return;
+    }
+
+    sourceElement.classList.add("hint-square");
+    hintUsed = true;
+    hintButton.disabled = true;
+}
+
+hintButton.addEventListener("click", showHint);
 
     function updateMoveHighlights() {
         clearMoveHighlights();
@@ -672,6 +840,7 @@
 
             if (!legalMove) {
                 setStatus("That move is not legal.", "incorrect");
+                flashFeedback("incorrect");
                 return false;
             }
 
@@ -681,8 +850,8 @@
             return true;
         }
 
-            finalizePlayerMove(source, target, undefined, fromDrag);
-        return true;
+            const moveResult = finalizePlayerMove(source, target, undefined, fromDrag);
+            return moveResult !== "snapback";
     }
 
 
@@ -814,7 +983,7 @@
             draggable: true,
             appearSpeed: 0,
             moveSpeed: 0,
-            snapbackSpeed: 0,
+            snapbackSpeed: 250,
             snapSpeed: 0,
             pieceTheme: "https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@1.0.0/website/img/chesspieces/wikipedia/{piece}.png",
             onDragStart: onDragStart,
@@ -825,6 +994,7 @@
         selectedSquare = null;
         selectedLegalMoves = [];
         clearMoveHighlights();
+        resetHint();
 
         document.removeEventListener("mousedown", handleBoardClick, true);
         document.addEventListener("mousedown", handleBoardClick, true);
@@ -885,7 +1055,10 @@
 
         if (attemptedUCI !== expectedMove) {
             setStatus("Not quite. Try again.", "incorrect");
-            board.position(game.fen());
+            flashFeedback("incorrect");
+            if (!fromDrag) {
+                board.position(game.fen());
+            }
             updateMoveHighlights();
             return "snapback";
         }
@@ -894,10 +1067,17 @@
 
         if (!move) {
             setStatus("That move is not legal.", "incorrect");
-            board.position(game.fen());
+            flashFeedback("incorrect");
+            if (!fromDrag) {
+                board.position(game.fen());
+            }
             updateMoveHighlights();
             return "snapback";
         }
+        
+        clearHintHighlight();
+        hintUsed = false;
+        hintButton.disabled = false;
 
         if (!fromDrag) {
             board.position(game.fen(), false);
@@ -906,11 +1086,13 @@
 
         if (currentSolutionIndex >= puzzle.solution.length) {
             setStatus("Correct! Puzzle solved.", "correct");
+            flashFeedback("complete");
             window.setTimeout(function() { finishPuzzle(); }, 700);
             return;
         }
 
         setStatus("Correct! Watch the response.", "correct");
+        flashFeedback("correct");
         scheduleOpponentMove();
     }
 
@@ -1032,6 +1214,7 @@
         */
 
         currentSolutionIndex++;
+        clearHintHighlight();
 
 
         /*
@@ -1049,6 +1232,7 @@
         if (currentSolutionIndex >= puzzle.solution.length) {
 
             setStatus("Puzzle solved!", "correct");
+            flashFeedback("complete");
 
             window.setTimeout(function() {
                 finishPuzzle();
