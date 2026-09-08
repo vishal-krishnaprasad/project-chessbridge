@@ -308,13 +308,59 @@
     </div>
 
     <!-- Shown only after ALL four tiers are completed -->
+    <div id="completion-message">
+        <h2>Join Project ChessBridge to get more of these puzzles!</h2>
+        <p>Keep learning, keep playing, and keep improving.</p>
+    </div>
+
+</div>
+
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<!-- Chess.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+
+<!-- Chessboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/chessboard-1.0.0.min.js"></script>
+
+
+<script>
+    const puzzleData = {
+
+        "under1000": {
+            title: "Under 1000",
+
+            puzzles: [
+
+                {
+                    fen: "5Q2/k1p4R/ppq3p1/8/8/nP6/P1P3PP/K7 b - - 0 1",
+                    playerColor: "b",
+                    solution: [
+                        "c6c3"
+                    ]
+                },
+
+                {
+                    fen: "8/1p4BP/6P1/p1P1K3/8/8/P1k5/5q2 b - - 0 1",
+                    playerColor: "b",
+                    solution: [
+                        "f1h1",
+                        "e5e6",
+                        "h8b2"
+                    ]
+                },
+
+                {
+                    fen: "4rk2/1bp3p1/5p2/p7/2B1rN2/1P4P1/P4P1P/3R2K1 w - - 0 1",
+                    playerColor: "w",
+                    solution: [
                         "f4g6"
                     ]
                 }
 
             ]
         },
-
 
         "1000-2000": {
             title: "1000–2000",
@@ -674,23 +720,6 @@
             setStatus("Choose a move.", "info");
         }
     });
-        if (pieceColor !== puzzle.playerColor) {
-            return false;
-        }
-
-
-        /*
-        Also make sure it is actually that side's turn.
-        */
-
-        if (game.turn() !== puzzle.playerColor) {
-            return false;
-        }
-
-        return true;
-    }
-
-
     /*
     ============================================================
     MOVE VALIDATION
