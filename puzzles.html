@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Chess Puzzles | Project ChessBridge</title>
+
+    <!-- Chessboard.js CSS -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/chessboard-1.0.0.min.css"
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fa;
+            color: #1f2937;
+            min-height: 100vh;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin: 0 0 10px;
+            font-size: clamp(28px, 5vw, 42px);
+            color: #111827;
+        }
+
+        .header p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 16px;
+        }
+
+        .puzzle-container {
+            background: white;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .tier-area {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        #tierSelector {
+            display: none;
+            width: 100%;
+            max-width: 350px;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            background: white;
+            color: #111827;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #tierSelector:focus {
+            outline: 2px solid #2563eb;
+            outline-offset: 2px;
+        }
+
+        .puzzle-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .puzzle-info h2 {
+            margin: 0 0 8px;
+            font-size: 24px;
+            color: #111827;
+        }
+
+        .puzzle-info p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+        #board-wrapper {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #promotion-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 10;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(17, 24, 39, 0.58);
+        }
+
+        #promotion-modal.is-visible {
+            display: flex;
+        }
+
+        .promotion-dialog {
+            width: min(100%, 380px);
+            padding: 24px;
+            border-radius: 16px;
+            background: white;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+            text-align: center;
+        }
+
+        .promotion-dialog h2 {
+            margin: 0 0 6px;
+            color: #111827;
+            font-size: 22px;
+        }
+
+        .promotion-dialog p {
+            margin: 0 0 18px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .promotion-options {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .promotion-option,
+        .promotion-cancel {
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            background: #f9fafb;
+            color: #111827;
+            cursor: pointer;
+            font: inherit;
+        }
+
+        .promotion-option {
+            min-height: 68px;
+            padding: 10px 6px;
+            font-weight: 600;
+        }
+
+        .promotion-option:hover,
+        .promotion-option:focus-visible {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .promotion-cancel {
+            margin-top: 16px;
+            padding: 9px 16px;
+            color: #4b5563;
+            background: transparent;
+        }
+
+        .promotion-cancel:hover,
+        .promotion-cancel:focus-visible {
+            background: #f3f4f6;
+        }
+
+        #board {
+            width: 100%;
+        }
+
+        .status {
+            min-height: 28px;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .status.correct {
+            color: #15803d;
+        }
+
+        .status.incorrect {
+            color: #dc2626;
+        }
+
+        .status.info {
+            color: #2563eb;
+        }
+
+        .progress {
+            text-align: center;
+            margin-top: 12px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        #completion-message {
+            display: none;
+            text-align: center;
+            padding: 70px 25px;
+        }
+
+        #completion-message h2 {
+            margin: 0 auto;
+            max-width: 650px;
+            font-size: clamp(28px, 6vw, 48px);
+            line-height: 1.15;
+            color: #111827;
+        }
+
+        #completion-message p {
+            margin-top: 16px;
+            color: #6b7280;
+            font-size: 17px;
+        }
+
+        @media (max-width: 600px) {
+            .page {
+                padding: 25px 12px 40px;
+            }
+
+            .puzzle-container {
+                padding: 18px 12px 25px;
+                border-radius: 14px;
+            }
+
+            .puzzle-info h2 {
+                font-size: 21px;
+            }
+
+            .header {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="header">
+        <h1>Chess Puzzles</h1>
+        <p>Test your tactical skills and see how far you can go.</p>
+    </div>
+
+    <div class="puzzle-container" id="puzzleContainer">
+
+        <!-- This dropdown appears after the first tier is completed -->
+        <div class="tier-area">
+            <select id="tierSelector">
+                <option value="under1000">Under 1000</option>
+                <option value="1000-1500">1000–1500</option>
+                <option value="1500-2000">1500–2000</option>
+                <option value="2000+">2000+</option>
+            </select>
+        </div>
+
+        <div class="puzzle-info">
+            <h2 id="tierTitle">Under 1000</h2>
+            <p id="puzzleDescription">
+                Solve the puzzle by finding the correct moves.
+            </p>
+        </div>
+
+        <div id="board-wrapper">
+            <div id="board"></div>
+        </div>
+
+        <div id="promotion-modal" role="dialog" aria-modal="true" aria-labelledby="promotion-title">
+            <div class="promotion-dialog">
+                <h2 id="promotion-title">Choose a promotion</h2>
+                <p>Select the piece for your pawn.</p>
+                <div class="promotion-options">
+                    <button class="promotion-option" type="button" data-promotion="q">Queen</button>
+                    <button class="promotion-option" type="button" data-promotion="r">Rook</button>
+                    <button class="promotion-option" type="button" data-promotion="b">Bishop</button>
+                    <button class="promotion-option" type="button" data-promotion="n">Knight</button>
+                </div>
+                <button class="promotion-cancel" type="button">Cancel</button>
+            </div>
+        </div>
+
+        <div id="status" class="status info">
+            Find the best move.
+        </div>
+
+        <div id="progress" class="progress">
+            Puzzle 1 of 4
+        </div>
+
+    </div>
+
+    <!-- Shown only after ALL four tiers are completed -->
+                        "f4g6"
+                    ]
+                }
+
+            ]
+        },
+
+
+        "1000-2000": {
+            title: "1000–2000",
+
+            puzzles: [
+
+                {
+                    fen: "1R3b1r/4q1pp/p4p2/4p1k1/2Q4N/5P2/P5PP/6K1 b - - 0 1",
+                    playerColor: "b",
+                    solution: [
+                        "e7c5",
+                        "c4c5",
+                        "f8c5",
+                        "g1f1",
+                        "h8b8"
+                    ]
+                },
+
+                {
+                    fen: "8/4B3/8/4k1Np/3p3P/1p4r1/1P6/2K5 w - - 0 1",
+                    playerColor: "w",
+                    solution: [
+                        "e7d6",
+                        "e5d6",
+                        "g5e4",
+                        "d6d5",
+                        "e4g3"
+                    ]
+                },
+
+                {
+                    fen: "3r4/1pN3k1/p2p1pp1/2pP3p/2P1P1bP/1P2K3/P7/6R1 w - - 0 27",
+                    playerColor: "w",
+                    solution: [
+                        "g1g4",
+                        "h5g4",
+                        "c7e6"
+                    ]
+                }
+
+            ]
+        },
+
+
+        "2000+": {
+            title: "2000+",
+
+            puzzles: [
+
+                {
+                    fen: "r4rk1/pb3pb1/1p4pp/8/1PNN4/1Q4Pn/3BPP1P/1R3RK1 w - - 3 4",
+                    playerColor: "w",
+                    solution: [
+                        "e4g2",
+                        "g1g2",
+                        "d5f4",
+                        "g2g1",
+                        "f4h3"
+                    ]
+                },
+
+                {
+                    fen: "8/7p/6p1/4kpK1/7P/5P2/8/8 b - - 0 1",
+                    playerColor: "b",
+                    solution: [
+                        "f5f4",
+                        "g5h6",
+                        "e5f6",
+                        "h6h7",
+                        "g6g5",
+                        "h4h5",
+                        "g5g4",
+                        "f3g4",
+                        "f4f3"
+                    ]
+                },
+
+                {
+                    fen: "K1kb4/P1p3P1/2P5/8/8/8/8/8 w - - 0 1",
+                    playerColor: "w",
+                    solution: [
+                        "g7g8b",
+                        "d8f6",
+                        "g8e6",
+                        "c8d8",
+                        "a8b7",
+                        "d8e7",
+                        "a7a8q"
+                    ]
+                }
+
+            ]
+        }
+
+    };
+
+
+    /*
+    ============================================================
+    GAME STATE
+    ============================================================
+    */
+
+    let currentTier = "under1000";
+    let currentPuzzleIndex = 0;
+
+    let game = null;
+    let board = null;
+
+    /*
+    completedTiers is intentionally stored only in JavaScript
+    memory.
+
+    Therefore:
+
+    - completing a tier disables it
+    - refreshing the page resets everything
+    */
+
+    const completedTiers = new Set();
+
+
+    /*
+    ============================================================
+    DOM ELEMENTS
+    ============================================================
+    */
+
+    const tierSelector = document.getElementById("tierSelector");
+    const tierTitle = document.getElementById("tierTitle");
+    const statusElement = document.getElementById("status");
+    const progressElement = document.getElementById("progress");
+    const puzzleContainer = document.getElementById("puzzleContainer");
+    const completionMessage = document.getElementById("completion-message");
+    const promotionModal = document.getElementById("promotion-modal");
+    const promotionCancel = promotionModal.querySelector(".promotion-cancel");
+
+    let pendingPromotion = null;
+
+
+    /*
+    ============================================================
+    HELPER FUNCTIONS
+    ============================================================
+    */
+
+
+    function setStatus(message, type = "info") {
+        statusElement.textContent = message;
+
+        statusElement.className = "status " + type;
+    }
+
+
+    /*
+    Normalize a move to UCI format.
+
+    chess.js gives us:
+        from
+        to
+        promotion
+
+    We convert it to something like:
+
+        e2e4
+        e7e8q
+    */
+
+    function moveToUCI(move) {
+        let uci = move.from + move.to;
+
+        if (move.promotion) {
+            uci += move.promotion;
+        }
+
+        return uci;
+    }
+
+
+    /*
+    Get the expected move from the solution.
+    */
+
+    function getExpectedMove() {
+        const puzzle = puzzleData[currentTier].puzzles[currentPuzzleIndex];
+
+        return puzzle.solution[currentSolutionIndex];
+    }
+
+
+    /*
+    ============================================================
+    PUZZLE LOADING
+    ============================================================
+    */
+
+    let currentSolutionIndex = 0;
+
+
+    function loadPuzzle() {
+
+        const tier = puzzleData[currentTier];
+
+        const puzzle = tier.puzzles[currentPuzzleIndex];
+
+        /*
+        Create a new Chess.js game from the FEN.
+        */
+
+        game = new Chess(puzzle.fen);
+
+        currentSolutionIndex = 0;
+        closePromotionSelector();
+
+        const orientation = puzzle.playerColor === "b" ? "black" : "white";
+
+        tierTitle.textContent = tier.title;
+        progressElement.textContent =
+            "Puzzle " + (currentPuzzleIndex + 1) + " of " + tier.puzzles.length;
+
+        if (board) {
+            board.destroy();
+        }
+
+        board = Chessboard("board", {
+            position: puzzle.fen,
+            orientation: orientation,
+            draggable: true,
+            onDragStart: onDragStart,
+            onDrop: onDrop,
+            onSnapEnd: onSnapEnd
+        });
+
+        setStatus("Find the best move.", "info");
+
+        window.setTimeout(function() {
+            board.resize();
+        }, 50);
+    }
+
+
+    function onDragStart(source, piece) {
+
+        const puzzle = puzzleData[currentTier].puzzles[currentPuzzleIndex];
+
+        if (currentSolutionIndex >= puzzle.solution.length) {
+            return false;
+        }
+
+        if (piece.charAt(0) !== puzzle.playerColor) {
+            return false;
+        }
+
+        if (game.turn() !== puzzle.playerColor) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    function onDrop(source, target) {
+
+        const piece = game.get(source);
+        const isPromotion = piece &&
+            piece.type === "p" &&
+            ((piece.color === "w" && target.charAt(1) === "8") ||
+             (piece.color === "b" && target.charAt(1) === "1"));
+
+        if (isPromotion) {
+            const legalMove = game.moves({ square: source, verbose: true }).some(function(move) {
+                return move.to === target;
+            });
+
+            if (!legalMove) {
+                setStatus("That move is not legal.", "incorrect");
+                return "snapback";
+            }
+
+            pendingPromotion = { source: source, target: target };
+            promotionModal.classList.add("is-visible");
+            promotionModal.querySelector(".promotion-option").focus();
+
+            return "snapback";
+        }
+
+        return finalizePlayerMove(source, target);
+    }
+
+
+    function finalizePlayerMove(source, target, promotion) {
+
+        const puzzle = puzzleData[currentTier].puzzles[currentPuzzleIndex];
+        const expectedMove = getExpectedMove();
+        const attemptedUCI = source + target + (promotion || "");
+
+        closePromotionSelector();
+
+        if (attemptedUCI !== expectedMove) {
+            setStatus("Not quite. Try again.", "incorrect");
+            board.position(game.fen());
+            return "snapback";
+        }
+
+        const move = game.move({ from: source, to: target, promotion: promotion });
+
+        if (!move) {
+            setStatus("That move is not legal.", "incorrect");
+            board.position(game.fen());
+            return "snapback";
+        }
+
+        currentSolutionIndex++;
+
+        if (currentSolutionIndex >= puzzle.solution.length) {
+            setStatus("Correct! Puzzle solved.", "correct");
+            window.setTimeout(function() { finishPuzzle(); }, 700);
+            return;
+        }
+
+        setStatus("Correct! Watch the response.", "correct");
+        window.setTimeout(function() { makeOpponentMove(); }, 500);
+    }
+
+
+    function closePromotionSelector() {
+        pendingPromotion = null;
+        promotionModal.classList.remove("is-visible");
+    }
+
+
+    promotionModal.addEventListener("click", function(event) {
+        const option = event.target.closest(".promotion-option");
+
+        if (option && pendingPromotion) {
+            const move = pendingPromotion;
+            finalizePlayerMove(move.source, move.target, option.dataset.promotion);
+        }
+
+        if (event.target === promotionModal) {
+            closePromotionSelector();
+            board.position(game.fen());
+            setStatus("Choose a move.", "info");
+        }
+    });
+
+    promotionCancel.addEventListener("click", function() {
+        closePromotionSelector();
+        board.position(game.fen());
+        setStatus("Choose a move.", "info");
+    });
+
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "Escape" && pendingPromotion) {
+            closePromotionSelector();
+            board.position(game.fen());
+            setStatus("Choose a move.", "info");
+        }
+    });
+        if (pieceColor !== puzzle.playerColor) {
+            return false;
+        }
+
+
+        /*
+        Also make sure it is actually that side's turn.
+        */
+
+        if (game.turn() !== puzzle.playerColor) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /*
+    ============================================================
+    MOVE VALIDATION
+    ============================================================
+    */
+
+    /*
+    ============================================================
+    OPPONENT MOVE
+    ============================================================
+    */
+
+    function makeOpponentMove() {
+
+        const puzzle = puzzleData[currentTier].puzzles[currentPuzzleIndex];
+
+        const opponentMove = puzzle.solution[currentSolutionIndex];
+
+
+        /*
+        The opponent move is also stored in UCI format.
+
+        Example:
+            e7e5
+        */
+
+        const from = opponentMove.substring(0, 2);
+        const to = opponentMove.substring(2, 4);
+
+        let promotion = undefined;
+
+        if (opponentMove.length === 5) {
+            promotion = opponentMove.charAt(4);
+        }
+
+
+        /*
+        Make the opponent's move in chess.js.
+        */
+
+        const move = game.move({
+            from: from,
+            to: to,
+            promotion: promotion
+        });
+
+
+        /*
+        Safety check.
+        */
+
+        if (!move) {
+            console.error(
+                "Invalid opponent solution move:",
+                opponentMove
+            );
+
+            setStatus(
+                "There is an error in this puzzle's solution.",
+                "incorrect"
+            );
+
+            return;
+        }
+
+
+        /*
+        Advance the solution index.
+        */
+
+        currentSolutionIndex++;
+
+
+        /*
+        Update the physical board.
+        */
+
+        board.position(game.fen());
+
+
+        /*
+        If the opponent move happened to be the final move
+        of the solution, finish the puzzle.
+        */
+
+        if (currentSolutionIndex >= puzzle.solution.length) {
+
+            setStatus("Puzzle solved!", "correct");
+
+            window.setTimeout(function() {
+                finishPuzzle();
+            }, 700);
+
+            return;
+        }
+
+
+        /*
+        It is now the player's turn again.
+        */
+
+        setStatus("Your turn. Find the next move.", "info");
+    }
+
+
+    /*
+    ============================================================
+    SNAP BOARD TO CURRENT GAME POSITION
+    ============================================================
+    */
+
+    function onSnapEnd() {
+        if (board && game) {
+            board.position(game.fen());
+        }
+    }
+
+
+    /*
+    ============================================================
+    FINISH CURRENT PUZZLE
+    ============================================================
+    */
+
+    function finishPuzzle() {
+
+        const tier = puzzleData[currentTier];
+
+        /*
+        If there are more puzzles in this tier,
+        load the next one.
+        */
+
+        if (currentPuzzleIndex < tier.puzzles.length - 1) {
+
+            currentPuzzleIndex++;
+
+            loadPuzzle();
+
+            return;
+        }
+
+
+        /*
+        We have completed the final puzzle
+        of this tier.
+        */
+
+        completedTiers.add(currentTier);
+
+        updateTierSelector();
+
+
+        /*
+        Check whether ALL four tiers are completed.
+        */
+
+        const allTiers = Object.keys(puzzleData);
+
+        const allCompleted = allTiers.every(function(tierKey) {
+            return completedTiers.has(tierKey);
+        });
+
+
+        if (allCompleted) {
+
+            showFinalCompletion();
+
+            return;
+        }
+
+
+        /*
+        Otherwise, show the dropdown.
+        */
+
+        tierSelector.style.display = "block";
+
+        setStatus(
+            "Tier complete! Choose another difficulty.",
+            "correct"
+        );
+    }
+
+
+    /*
+    ============================================================
+    UPDATE DROPDOWN
+    ============================================================
+    */
+
+    function updateTierSelector() {
+
+        const options = tierSelector.options;
+
+        for (let i = 0; i < options.length; i++) {
+
+            const tierKey = options[i].value;
+
+            /*
+            Disable completed tiers.
+            */
+
+            options[i].disabled = completedTiers.has(tierKey);
+
+            /*
+            Add visual text indicating completion.
+            */
+
+            const baseNames = {
+                "under1000": "Under 1000",
+                "1000-1500": "1000–1500",
+                "1500-2000": "1500–2000",
+                "2000+": "2000+"
+            };
+
+            if (completedTiers.has(tierKey)) {
+                options[i].textContent =
+                    baseNames[tierKey] + " ✓";
+            } else {
+                options[i].textContent =
+                    baseNames[tierKey];
+            }
+        }
+
+
+        /*
+        Don't leave the dropdown pointing at a completed tier
+        if another tier is available.
+        */
+
+        if (completedTiers.has(tierSelector.value)) {
+
+            for (let i = 0; i < options.length; i++) {
+
+                if (!options[i].disabled) {
+                    tierSelector.value = options[i].value;
+                    break;
+                }
+            }
+        }
+    }
+
+
+    /*
+    ============================================================
+    TIER SELECTION
+    ============================================================
+    */
+
+    tierSelector.addEventListener("change", function() {
+
+        const selectedTier = tierSelector.value;
+
+
+        /*
+        Do nothing if somehow a completed tier was selected.
+        */
+
+        if (completedTiers.has(selectedTier)) {
+            return;
+        }
+
+
+        currentTier = selectedTier;
+
+        currentPuzzleIndex = 0;
+
+        loadPuzzle();
+    });
+
+
+    /*
+    ============================================================
+    ALL TIERS COMPLETED
+    ============================================================
+    */
+
+    function showFinalCompletion() {
+
+        /*
+        Completely hide the puzzle interface.
+        */
+
+        puzzleContainer.style.display = "none";
+
+
+        /*
+        Show the CTA.
+        */
+
+        completionMessage.style.display = "block";
+    }
+
+
+    /*
+    ============================================================
+    WINDOW RESIZE
+    ============================================================
+    */
+
+    window.addEventListener("resize", function() {
+
+        if (board) {
+            board.resize();
+        }
+
+    });
+
+
+    /*
+    ============================================================
+    START THE FIRST PUZZLE
+    ============================================================
+    */
+
+    loadPuzzle();
+
+</script>
+
+</body>
+</html>

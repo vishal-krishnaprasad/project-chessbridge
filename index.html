@@ -144,6 +144,20 @@
       display: none;
     }
 
+    .resources-panel {
+      padding: 24px 0 0;
+    }
+
+    .resources-frame {
+      display: block;
+      width: 100%;
+      min-height: 1150px;
+      border: 0;
+      border-radius: 18px;
+      background: #f5f7fa;
+      box-shadow: var(--shadow);
+    }
+
     header {
       padding: 40px 0 20px;
       text-align: center;
@@ -933,6 +947,7 @@
   <nav class="main-tabs" role="tablist" aria-label="Main pages">
     <button class="main-tab" type="button" role="tab" aria-controls="about-chessbridge" aria-selected="true" data-main-tab="about-chessbridge">About ChessBridge</button>
     <button class="main-tab" type="button" role="tab" aria-controls="partner-organizations" aria-selected="false" data-main-tab="partner-organizations">Partner Organizations</button>
+    <button class="main-tab" type="button" role="tab" aria-controls="resources" aria-selected="false" data-main-tab="resources">Resources</button>
     <a class="external-link" href="https://discord.gg/6XR8N6FSv9" target="_blank" rel="noopener noreferrer">Join us today!</a>
     
   </nav>
@@ -957,14 +972,14 @@
 
   <main>
     <section id="About Us" role="tabpanel" tabindex="0" aria-labelledby="About Us-tab">
-      <h2>Bridging the Plateaus</h2>
+      <h2>Mission Statement</h2>
       <p class="About Us-text">We're focused on providing free chess coaching for anyone who wishes to improve their skills and are at any skill level below 2000 elo. Since it's harder to coach above 2000 elo, we are still working on a system. However, there's no restrictions; if you're above this level, you can still join!</p>
 
       <h3 class="staff-header">About our staff</h3>
       <div class="staff-layout">
         <article class="staff-card">
           <h3>Founder/Owner and Coach</h3>
-          <p>Hey, my name's Vishal K(I go by VK). I'm rated 1920 over the board as well as 2350+ on chess.com. I recently graduated high school and am now in college studying aerospace engineering. The game of chess has always been a passion for me, so I hope Project ChessBridge can encourage other people to improve their skills and have a fun time!</p>
+          <p>Hey, my name's Vishal K(I go by VK). I'm rated 1920 over the board as well as 2350+ on chess.com. I'm currently in my first year of college studying aerospace engineering. The game of chess has always been a passion for me, so I hope Project ChessBridge can encourage other people to enjoy the game through a methodical system of improvement!</p>
           <img src="Images/IMG-20260601-WA0000.jpg" alt="Founder/Owner and Coach photo">
         </article>
         <article class="staff-card ashton-card">
@@ -1062,7 +1077,7 @@
     </section>
 
     <section id="ChessPath" role="tabpanel" tabindex="0" aria-labelledby="ChessPath-tab" hidden>
-      <h2>Train with ChessPath</h2>
+      <h2>Train with ChessPath!</h2>
       <p>Open the ChessPath explorer to review opening ideas, study a seeded position, and keep your training focused on practical improvement.</p>
       <a class="external-link chesspath-link" href="https://chesspath.pro/" target="_blank" rel="noopener noreferrer">Open ChessPath in a new tab</a>
       <iframe class="chesspath-embed" src="https://chesspath.pro/" title="ChessPath opening explorer" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
@@ -1088,9 +1103,8 @@
         <img class="partner-image-slot" src="https://chesspath.pro/assets/watercolor.jpeg" alt="ChessPath project image">
         <div class="partner-copy">
           <h3>ChessPath.Pro</h3>
-          <p>ChessPath.Pro is an opening explorer and training system built for players who want to analyze positions, build a personalized repertoire, and improve through smarter study. It brings together crowd-sourced popularity and win-rate data from millions of games with deep cached engine evaluations and predictive tools so you can explore any opening, any position, and understand what lines are practical, effective, and instructive.</p>
-          <p>Whether you're preparing for tournaments or breaking through a plateau, ChessPath helps you organize your repertoire, study the ideas behind openings, and train with adaptive spaced repetition. With tools for deep evaluation, move-quality metrics, and a free distributed-computing model, it turns opening study into a structured, trainer-like workflow instead of a static database.</p>
-
+          <p>ChessPath.Pro is an opening explorer and training system built for players who want to analyze positions, build a personalized repertoire, and improve through smarter study. 
+            With tools for deep evaluation, move-quality metrics, and a free distributed-computing model, it turns opening study into a structured, trainer-like workflow instead of a static database.</p>
           <div class="partner-discord">
             <div class="partner-discord-title">Community & socials</div>
             <div class="partner-discord-row">
@@ -1128,8 +1142,12 @@
     </div>
   </section>
 
+  <section id="resources" class="main-panel resources-panel" role="tabpanel" aria-labelledby="resources-tab" hidden>
+    <iframe class="resources-frame" src="puzzles.html" title="Chess puzzles" loading="lazy"></iframe>
+  </section>
+
   <footer>
-    <p>© 2025 Project ChessBridge. All rights reserved.</p>
+    <p>© 2024 Project ChessBridge. All rights reserved.</p>
   </footer>
 
   <script>
