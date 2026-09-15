@@ -62,9 +62,7 @@
             overflow: hidden;
         }
 
-        #board-wrapper.flash-correct::after,
-        #board-wrapper.flash-incorrect::after,
-        #board-wrapper.flash-complete::after {
+        #board-wrapper.flash-incorrect::after {
             content: "";
             position: absolute;
             inset: 0;
@@ -72,27 +70,11 @@
             pointer-events: none;
         }
 
-        #board-wrapper.flash-correct::after {
-            animation: puzzle-flash-correct 250ms ease-out;
-        }
 
         #board-wrapper.flash-incorrect::after {
             animation: puzzle-flash-incorrect 250ms ease-out;
         }
 
-        #board-wrapper.flash-complete::after {
-            animation: puzzle-flash-complete 600ms ease-out;
-        }
-
-        @keyframes puzzle-flash-correct {
-            0%, 100% {
-                background-color: transparent;
-            }
-
-            35% {
-                background-color: rgba(35, 150, 70, 0.58);
-            }
-        }
 
         @keyframes puzzle-flash-incorrect {
             0%, 100% {
@@ -101,16 +83,6 @@
 
             35% {
                 background-color: rgba(185, 35, 45, 0.58);
-            }
-        }
-
-        @keyframes puzzle-flash-complete {
-            0%, 18%, 54%, 100% {
-                background-color: transparent;
-            }
-
-            9%, 45% {
-                background-color: rgba(35, 150, 70, 0.58);
             }
         }
 
@@ -366,17 +338,6 @@
             font-size: 14px;
         }
 
-        .auto-next-control {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 10px;
-            color: #c6d7f9;
-            font-size: 14px;
-            text-align: center;
-        }
-
         .next-puzzle-button {
             display: block;
             margin: 12px auto 0;
@@ -398,13 +359,6 @@
             background: rgba(75,124,255,0.16);
         }
 
-        .auto-next-control input {
-            width: 16px;
-            height: 16px;
-            margin: 0;
-            accent-color: #4b7cff;
-            cursor: pointer;
-        }
 
         #completion-message {
             display: none;
@@ -458,10 +412,46 @@
                 border-width: 3px;
             }
         }
+
+       #confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            overflow: visible;
+            z-index: 9999;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 9px;
+            height: 14px;
+            opacity: 1;
+            animation-name: confetti-fall;
+            animation-duration: 1400ms;
+            animation-timing-function: linear;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes confetti-fall {
+            from {
+                top: -20px;
+                opacity: 1;
+            }
+
+            to {
+                top: 100vh;
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 
 <body>
+
+<div id = "confetti-container"></div>
 
 <div class="page">
 
@@ -522,10 +512,6 @@
             Puzzle 1 of 3
         </div>
 
-        <label class = "auto-next-control" for = "auto-next-checkbox">
-            <input id = "auto-next-checkbox" type = "checkbox" checked>
-            <span>Instantly start the next puzzle</span>
-        </label>
         <button id = "next-puzzle-button" class = "next-puzzle-button" type = "button" hidden>
             Next Puzzle
         </button>
@@ -722,7 +708,6 @@
     const statusElement = document.getElementById("status");
     const progressElement = document.getElementById("progress");
     const boardWrapper = document.getElementById("board-wrapper");
-    const autoNextCheckbox = document.getElementById("auto-next-checkbox");
     const nextPuzzleButton = document.getElementById("next-puzzle-button");
     const completionMessage = document.getElementById("completion-message");
     const promotionModal = document.getElementById("promotion-modal");
@@ -761,14 +746,36 @@
     }
 
     function flashFeedback(type) {
-        const flashClasses = ["flash-correct", "flash-incorrect", "flash-complete"];
 
-        flashClasses.forEach(function(className) {
-            boardWrapper.classList.remove(className);
-        });
+        if (type !== "incorrect") {
+            return;
+        }
+
+        boardWrapper.classList.remove("flash-incorrect");
 
         void boardWrapper.offsetWidth;
-        boardWrapper.classList.add("flash-" + type);
+        boardWrapper.classList.add("flash-incorrect");
+    }
+
+    function showConfetti() {
+        const confettiContainer = document.getElementById("confetti-container");
+
+        for (let i = 0; i < 80; i++) {
+            const piece = document.createElement("span");
+            piece.className = "confetti";
+
+            const colors = ["#4b7cff", "#7ce7a8", "#ffcf5c", "#ff6b6b", "#c084fc"];
+            piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+            piece.style.left = Math.random() * 100 + "%";
+            piece.style.animationDelay = Math.random() * 300 + "ms";
+
+            confettiContainer.appendChild(piece);
+
+            window.setTimeout(function() {
+                piece.remove();
+            }, 1800);
+        }
     }
 
     function updatePromotionOptions(playerColor) {
@@ -1182,16 +1189,13 @@ hintButton.addEventListener("click", showHint);
 
         if (currentSolutionIndex >= puzzle.solution.length) {
             setStatus("Correct! Puzzle solved.", "correct");
-            flashFeedback("complete");
+            showConfetti();
             puzzleCompleted = true;
-            window.setTimeout(function() { 
-                finishPuzzle(); 
-            }, 700);
+            finishPuzzle();
             return;
         }
 
         setStatus("Correct! Watch the response.", "correct");
-        flashFeedback("correct");
         scheduleOpponentMove();
     }
 
@@ -1331,12 +1335,8 @@ hintButton.addEventListener("click", showHint);
         if (currentSolutionIndex >= puzzle.solution.length) {
 
             setStatus("Puzzle solved!", "correct");
-            flashFeedback("complete");
-
-            window.setTimeout(function() {
-                finishPuzzle();
-            }, 700);
-
+            showConfetti();
+            finishPuzzle();
             return;
         }
 
@@ -1387,16 +1387,10 @@ hintButton.addEventListener("click", showHint);
 
         if (currentPuzzleIndex < tier.puzzles.length - 1) {
 
-                if (!autoNextCheckbox.checked) {
-                    nextPuzzleButton.hidden = false;
-                    setStatus("Puzzle complete. Click the button to move on.", "info");
-                    return;
-                }
-
-            currentPuzzleIndex++;
-            loadPuzzle();
-
+            nextPuzzleButton.hidden = false;
+            setStatus("Puzzle complete. Click the button to move on.", "info");
             return;
+
         }
 
         /*
@@ -1576,21 +1570,13 @@ hintButton.addEventListener("click", showHint);
     nextPuzzleButton.addEventListener("click", function() {
         const tier = puzzleData[currentTier];
 
-        if (autoNextCheckbox.checked || currentPuzzleIndex >= tier.puzzles.length - 1) {
+        if (currentPuzzleIndex >= tier.puzzles.length - 1) {
             return;
         }
 
         currentPuzzleIndex++;
         nextPuzzleButton.hidden = true;
         loadPuzzle();
-    });
-
-    autoNextCheckbox.addEventListener("change", function() {
-        if (autoNextCheckbox.checked) {
-            nextPuzzleButton.hidden = true;
-        } else if (puzzleCompleted) {
-            nextPuzzleButton.hidden = false;
-        }
     });
 
     /*
