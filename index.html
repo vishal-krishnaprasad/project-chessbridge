@@ -865,8 +865,8 @@
     .offer-image-slot {
       display: block;
       width: 100%;
-      height: 220px;
-      object-fit: cover;
+      height: auto;
+      object-fit: contain;
       object-position: center;
       border-radius: 14px;
       border: 1px solid rgba(255, 255, 255, 0.12);
@@ -951,7 +951,7 @@
     <button class="main-tab" type="button" role="tab" aria-controls="about-chessbridge" aria-selected="true" data-main-tab="about-chessbridge">About ChessBridge</button>
     <button class="main-tab" type="button" role="tab" aria-controls="partner-organizations" aria-selected="false" data-main-tab="partner-organizations">Partner Organizations</button>
     <button class="main-tab" type="button" role="tab" aria-controls="resources" aria-selected="false" data-main-tab="resources">Resources</button>
-    <a class="external-link" href="https://discord.gg/6XR8N6FSv9" target="_blank" rel="noopener noreferrer">Join us today!</a>
+    
     
   </nav>
 
@@ -960,6 +960,7 @@
     <img class="logo-slot" src="Images/cbLogo.png" alt="chessbridge logo">
     <h1>Project ChessBridge</h1>
     <p class="intro">Free chess coaching for anyone between the range of 100-2000 elo! </p>
+    <a class="external-link" href="https://discord.gg/6XR8N6FSv9" target="_blank" rel="noopener noreferrer">Join us today!</a>
   </header>
 
   <nav>
@@ -1143,6 +1144,8 @@
       data-resource-tab = "resource-chesspath-pro" >ChessPath.Pro</button>
       <button id = "resource-tactical-puzzles-tab" type = "button" role = "tab" aria-controls = "resource-tactical-puzzles" aria-selected = "true"
       data-resource-tab = "resource-tactical-puzzles">Tactical Puzzles</button>
+      <button id = "resource-chessbridge-newsletter-tab" type = "button" role = "tab" aria-controls = "resource-chessbridge-newsletter" aria-selected = "false"
+      data-resource-tab="resource-chessbridge-newsletter">ChessBridge Newsletter</button>
     </nav>
     <section id = "resource-chesspath-pro" role = "tabpanel" tabindex = "0" aria-labelledby = "resource-chesspath-pro-tab" hidden>
       <h2>Train with ChessPath!</h2>
@@ -1155,9 +1158,18 @@
     <section id = "resource-tactical-puzzles" role = "tabpanel" tabindex = "0" aria-labelledby = "resource-tactical-puzzles-tab">
     <iframe class="resources-frame" src="puzzles.html" title="Chess puzzles" loading="lazy"></iframe>
   </section>
+  <section id = "resource-chessbridge-newsletter" role = "tabpanel" tabindex = "0" aria-labelledby = "resource-chessbridge-newsletter-tab">
+    <h2>ChessBridge Newsletter</h2>
+     <img class="offer-image-slot" src="Images/newsletter-placeholder.png" alt="ChessBridge Newsletter placeholder image">
+  </section>
 </section>
+
   <footer>
-    <p>© 2024 Project ChessBridge. All rights reserved.</p>
+    <p>© 2024 Project ChessBridge. All rights reserved.
+    </p>
+    <p class="disclaimer">
+      Project ChessBridge is an independent organization. We are not affiliated with the ChessBridge Foundation.
+    </p>
   </footer>
 
   <script>
