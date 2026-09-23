@@ -332,10 +332,7 @@
     }
 
     .reviews-scroll-shell {
-      display: grid;
-      grid-template-columns: 44px minmax(0, 1fr) 44px;
-      align-items: center;
-      gap: 8px;
+      position: relative;
       margin-top: 20px;
     }
 
@@ -344,29 +341,34 @@
     }
 
     .review-scroll-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 40px;
-      height: 40px;
+      width: 10px;
+      height: 36px;
+      padding: 0;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 999px;
-      background: rgba(9, 20, 44, 0.72);
+      border-radius: 4px;
+      background: rgba(9, 20, 44, 0.45);
       color: var(--text);
       cursor: pointer;
-      font-size: 1.2rem;
+      font-size: 0;
       line-height: 1;
       pointer-events: auto;
       transition: background 0.2s ease, transform 0.2s ease;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
     }
 
     .review-scroll-btn:first-child {
-      grid-column: 1;
+      left: 0;
     }
 
     .review-scroll-btn:last-child {
-      grid-column: 3;
+      right: 0;
     }
 
     .review-scroll-btn::before {
@@ -377,20 +379,16 @@
     }
 
     .review-scroll-btn:first-child::before {
-      content: "←";
+      content: "<";
     }
 
     .review-scroll-btn:last-child::before {
-      content: "→";
-    }
-
-    .review-scroll-btn {
-      font-size: 0;
+      content: ">";
     }
 
     .review-scroll-btn:hover {
       background: rgba(20, 32, 60, 0.9);
-      transform: translateY(-1px);
+      transform: translateY(-50%);
     }
 
     .projects-grid {
@@ -423,13 +421,8 @@
         text-align: center;
       }
 
-      .reviews-scroll-shell {
-        grid-template-columns: 34px minmax(0, 1fr) 34px;
-        gap: 4px;
-      }
-
       .review-scroll-btn {
-        width: 32px;
+        width: 10px;
         height: 32px;
       }
 
@@ -1039,8 +1032,8 @@
       <p>Some reviewers featured here prefer to have their identities anonymous.</p>
       <div class="reviews-scroll-shell">
         <div class="reviews-scroll-controls" aria-label="Review slider controls">
-          <button class="review-scroll-btn" type="button" data-direction="left" aria-label="Scroll reviews left">&#8592;</button>
-          <button class="review-scroll-btn" type="button" data-direction="right" aria-label="Scroll reviews right">&#8594;</button>
+          <button class="review-scroll-btn" type="button" data-direction="left" aria-label="Scroll reviews left"></button>
+          <button class="review-scroll-btn" type="button" data-direction="right" aria-label="Scroll reviews right"></button>
         </div>
         <div class="projects-grid-wrapper" tabindex="0" aria-label="Scrollable reviews carousel">
           <div class="projects-grid">
@@ -1168,7 +1161,7 @@
     <p>© 2024 Project ChessBridge. All rights reserved.
     </p>
     <p class="disclaimer">
-      Project ChessBridge is an independent organization. We are not affiliated with the ChessBridge Foundation.
+      Project ChessBridge is an independent nonprofit organization. We are not affiliated with the ChessBridge Foundation.
     </p>
   </footer>
 
