@@ -98,44 +98,61 @@
       margin: 0 auto;
     }
 
+    body {
+      padding-left: 245px;
+    }
+
     .main-tabs {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 245px;
+      height: 100vh;
+      margin: 0;
+      padding: 24px 14px;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      justify-content: flex-start;
       gap: 8px;
-      padding: 18px 16px 0;
+
+      background: linear-gradient(180deg, #087f82 0%, #056568 100%);
+
+      border: 0;
+      border-radius: 0;
+      box-shadow: 4px 0 18px rgba(0, 0, 0, 0.18);
+      z-index: 1000;
     }
 
     .main-tabs .external-link {
-      margin: 0 0 0 auto;
+      margin: 0;
       text-align: center;
     }
 
     .main-tab {
       position: relative;
+      width: 100%;
       border: 0;
+      border-radius: 10px;
       background: transparent;
-      color: var(--muted);
+      color: rgba(255, 255, 255, 0.82);
       cursor: pointer;
       font: inherit;
       font-weight: 600;
-      padding: 10px 16px;
+      padding: 14px 16px;
+      text-align: left;
+      transition: 
+        background 0.2s ease,
+        color 0.2s ease;
     }
 
     .main-tab::after {
-      position: absolute;
-      right: 16px;
-      bottom: 3px;
-      left: 16px;
-      height: 2px;
-      background: var(--accent);
-      content: "";
-      transform: scaleX(0);
-      transition: transform 0.2s ease;
+      display: none;
     }
 
     .main-tab[aria-selected="true"],
     .main-tab:hover {
-      color: var(--text);
+      color: #064b4d;
+      background: rgba(255, 255, 255, 0.92);
     }
 
     .main-tab[aria-selected="true"]::after,
@@ -410,16 +427,90 @@
     }
 
     @media (max-width: 768px) {
+
+      body {
+        padding-left: 0;
+      }
       .main-tabs {
-        flex-wrap: wrap;
+        position: sticky;
+        top: 0;
+        left: auto;
+        width: 100%;
+        height: auto;
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+
+        overflow-x: auto;
+        gap: 4px;
+        padding: 8px;
+        border-radius: 0;
+        z-index: 1000;
       }
 
-      .main-tabs .external-link {
+      .main-tab {
         flex: 0 0 auto;
-        width: fit-content;
-        margin: 8px auto 0;
+        width: auto;
+        padding: 10px 12px;
         text-align: center;
+        white-space: nowrap;
+        font-size: 0.9rem;
       }
+
+      .main-panel > nav:not(.resource-tabs) {
+        position: sticky;
+        top: 0;
+        left: auto;
+        right: auto;
+        width: 100%;
+        overflow-x: auto;
+        margin: 0;
+        padding: 10px 12px;
+        border-radius: 0;
+        border-width: 0 0 1px 0;
+        z-index: 900;
+      }
+
+      .main-panel > nav:not(.resource-tabs) ul {
+        display: flex;
+        flex-wrap: nowrap;
+        width: max-content;
+        gap: 8px;
+      }
+
+      .main-panel > nav:not(.resource-tabs) li {
+         flex: 0 0 auto;
+      }
+
+      .main-panel > nav:not(.resource-tabs) + main {
+        padding-top: 0;
+      }
+
+  /* Resources sub-navigation */
+      .resources-panel > .resource-tabs {
+        position: sticky;
+        top: 0;
+        left: auto;
+        right: auto;
+        width: 100%;
+
+        overflow-x: auto;
+        white-space: nowrap;
+
+        margin: 0;
+        padding: 10px 12px;
+
+        border-radius: 0;
+        border-width: 0 0 1px 0;
+        z-index: 900;
+      }
+
+      .resources-panel {
+        padding-top: 0;
+      }
+    }
 
       .review-scroll-btn {
         width: 25px;
@@ -941,20 +1032,277 @@
     header {
       position: relative;
       overflow: hidden;
-      background-image: linear-gradient(rgba(2, 8, 20, 0.25), rgba(2, 8, 20, 0.45)), url("Images/bg.jpg");
+      background-image: linear-gradient(rgba(2, 8, 20, 0.25), rgba(2, 8, 20, 0.45)), url("Images/landingpage-bg.png");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
     }
+
+    .main-tabs {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+
+      width: 245px;
+      max-width: 245px;
+
+      margin: 0;
+      padding: 28px 16px 22px;
+      display: flex;
+      flex-direction: column;
+
+      background: linear-gradient(180deg, rgba(0,0,0, 0.98), rgba(0,0,0,0.98))  center / cover no-repeat;
+
+      border: 0;
+      border-right: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 0;
+
+      box-shadow: 8px 0 28px rgba(0, 0, 0, 0.25);
+      z-index: 1000;
+    }
+    
+    .sidebar-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 38px;
+      color: white;
+      text-align: center;
+    }
+
+    .sidebar-brand img {
+      width: 105px;
+      height: 105px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+
+    .sidebar-brand div {
+      font-size: 1.05rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+    
+    .sidebar-brand strong {
+      font-weight: 700;
+    }
+    
+    .sidebar-navigation {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .main-tabs .main-tab {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      width: 100%;
+      min-height: 58px;
+      padding: 10px 12px;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.84);
+      cursor: pointer;
+      font: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-align: left;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+      
+      .main-tabs .main-tab img {
+        flex: 0 0 auto;
+
+        width: 30px;
+        height: 30px;
+        object-fit: contain;
+        opacity: 0.9;
+        transition: opacity 0.2s ease;
+      }
+      
+      .main-tabs .main-tab span {
+        flex: 1;
+      }
+      .main-tabs .main-tab:hover {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.10);
+        transform: translateX(2px);
+      }
+      
+      .main-tabs .main-tab:hover img {
+      opacity: 1;
+      }
+      
+      .main-tabs .main-tab[aria-selected="true"] {
+        color: #064b4d;
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+      }
+      
+      .main-tabs .main-tab[aria-selected="true"] img {
+        opacity: 1;
+      }
+      
+      .main-tabs .main-tab::after {
+        display: none;
+      }
+      
+      .sidebar-socials {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 18px;
+        margin-top: auto;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.20);
+      }
+
+      .sidebar-socials a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        transition:
+          background 0.2s ease,
+          transform 0.2s ease;
+      }
+      
+      .sidebar-socials a:hover {
+        background: rgba(255, 255, 255, 0.10);
+        transform: translateY(-2px);
+      }
+      
+      .sidebar-socials img {
+        width: 25px;
+        height: 25px;
+        object-fit: contain;
+        opacity: 0.9;
+      }
+
+      .sidebar-socials a:hover img {
+        opacity: 1;
+      }
+      
+      @media (max-width: 768px) {
+        .main-tabs {
+          position: sticky;
+          top: 0;
+          left: auto;
+          bottom: auto;
+          width: 100%;
+          max-width: none;
+          min-height: auto;
+          padding: 10px;
+          flex-direction: row;
+          align-items: center;
+          overflow-x: auto;
+          gap: 6px;
+          border-right: 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        
+        .sidebar-brand {
+          flex: 0 0 auto;
+          flex-direction: row;
+          margin: 0 8px 0 0;
+          gap: 8px;
+        }
+
+        .sidebar-brand img {
+          width: 42px;
+          height: 42px;
+          margin: 0;
+        }
+
+        .sidebar-brand div {
+          display: none;
+        }
+        
+        .sidebar-navigation {
+          flex-direction: row;
+          width: auto;
+          flex: 0 0 auto;
+        }
+
+        .main-tabs .main-tab {
+          flex: 0 0 auto;
+          width: auto;
+          min-height: 48px;
+          padding: 8px 12px;
+          white-space: nowrap;
+        }
+        
+        .main-tabs .main-tab img {
+          width: 24px;
+          height: 24px;
+        }
+
+        .sidebar-socials {
+        flex: 0 0 auto;
+        margin: 0 0 0 8px;
+        padding: 0;
+        border-top: 0;
+        }
+
+        .sidebar-socials a {
+          width: 36px;
+          height: 36px;
+        }
+
+        .sidebar-socials img {
+          width: 22px;
+          height: 22px;
+          }
+      }
   </style>
 </head>
 <body>
   <nav class="main-tabs" role="tablist" aria-label="Main pages">
-    <button class="main-tab" type="button" role="tab" aria-controls="about-chessbridge" aria-selected="true" data-main-tab="about-chessbridge">About ChessBridge</button>
-    <button class="main-tab" type="button" role="tab" aria-controls="partner-organizations" aria-selected="false" data-main-tab="partner-organizations">Partner Organizations</button>
-    <button class="main-tab" type="button" role="tab" aria-controls="resources" aria-selected="false" data-main-tab="resources">Resources</button>
-    
-    
+    <div class="sidebar-brand">
+      <img src="Images/cbLogo.png" alt="Project ChessBridge logo">
+      <div>Project <strong>ChessBridge</strong></div>
+    </div>
+
+    <div class="sidebar-navigation">
+
+      <button class="main-tab" type="button" role="tab" aria-controls="about-chessbridge" aria-selected="true" data-main-tab="about-chessbridge">
+        <img src="Images/aboutIcon.jpg" alt="About Icon">
+        <span>About ChessBridge</span>
+      </button>
+
+      <button class="main-tab" type="button" role="tab" aria-controls="partner-organizations" aria-selected="false" data-main-tab="partner-organizations">
+        <img src="Images/partnersIcon.jpg" alt="">
+        <span>Partner Organizations</span>
+      </button>
+
+      <button class="main-tab" type="button" role="tab" aria-controls="resources" aria-selected="false" data-main-tab="resources">
+        <img src="Images/resourcesIcon.jpg" alt="">
+        <span>Resources</span>
+      </button>
+
+    </div>
+
+    <div class="sidebar-socials">
+      <a href="mailto:projectchessbridge@gmail.com" aria-label="Email Project ChessBridge">
+        <img src="Images/gmailLogo.png" alt="Email">
+      </a>
+
+      <a href="https://instagram.com/projectchessbridge" target="_blank" rel="noopener noreferrer" aria-label="Project ChessBridge on Instagram">
+        <img src="Images/instaLogo.jpg" alt="Instagram">
+      </a>
+
+      <a href="https://discord.gg/6XR8N6FSv9" target="_blank" rel="noopener noreferrer" aria-label="Project ChessBridge Discord">
+        <img src="https://art.pixilart.com/47700d2e75da.png" alt="Discord">
+      </a>
+    </div>
+
   </nav>
 
   <div id="about-chessbridge" class="main-panel">
@@ -984,7 +1332,7 @@
       <div class="staff-layout">
         <article class="staff-card">
           <h3>Founder/Owner and Coach</h3>
-          <p>Hey, my name's Vishal K(I go by VK). I'm rated 1920 over the board as well as 2350+ on chess.com. I'm currently in my first year of college studying aerospace engineering. The game of chess has always been a passion for me, so I hope Project ChessBridge can encourage other people to enjoy the game through a methodical system of improvement!</p>
+          <p>Hey, my name's Vishal K(I go by VK). I'm rated 1920 over the board as well as 2350+ on chess.com. I'm currently in my first year of college studying aerospace engineering. The game of chess has always been a passion for me, so I hope Project ChessBridge can encourage other people to enjoy the game while getting better!</p>
           <img src="Images/IMG-20260601-WA0000.jpg" alt="Founder/Owner and Coach photo">
         </article>
         <article class="staff-card ashton-card">
