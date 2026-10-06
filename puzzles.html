@@ -144,6 +144,26 @@
             -webkit-user-select: none;
             -webkit-user-drag: none;
         }
+
+        #board-wrapper.explanation-visible {
+            max-width: 280px;
+        }
+
+        #board-wrapper.explanation-visible #board {
+            pointer-events: none;
+        }
+
+        #puzzle-explanation {
+            max-width: 650px;
+            margin: 16px auto 0;
+            color: #c6d7f9;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        #puzzle-explanation[hidden] {
+            display: none;
+        }
         
         #promotion-modal {
             position: fixed;
@@ -280,6 +300,16 @@
             font-size: 15px;
         }
 
+        .hint-prompt {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hint-prompt[hidden] {
+            display: none;
+        }
+
         .hint-button {
             display: inline-flex;
             align-items: center;
@@ -304,6 +334,25 @@
         .hint-button:disabled {
             cursor: default;
             opacity:0.6;
+        }
+
+        .explanation-button {
+            padding: 9px 14px;
+            border: 1px solid rgba(75, 124, 255, 0.8);
+            border-radius: 8px;
+            background: rgba(14, 26, 58, 0.95);
+            color: #f5f9ff;
+            cursor: pointer;
+            font: inherit;
+        }
+
+        .explanation-button:hover,
+        .explanation-button:focus-visible {
+            background: rgba(75, 124, 255, 0.16);
+        }
+
+        .explanation-button[hidden] {
+            display: none;
         }
 
         .move-dot,
@@ -482,12 +531,19 @@
         <div id="board-wrapper">
             <div id="board"></div>
         </div>
+        <div id="puzzle-explanation" hidden></div>
         <div id= "hint-control" class= "hint-control">
-            <button id = "hint-button" class = "hint-button"
-            type= "button" aria-label = "Need a hint">
-            💡
+            <span id="hint-prompt" class="hint-prompt">
+                <button id = "hint-button" class = "hint-button"
+                type= "button" aria-label = "Need a hint">
+                💡
+                </button>
+                <span>Need a hint?</span>
+            </span>
+            <button id="explanation-button" class="explanation-button" type="button"
+                    aria-controls="puzzle-explanation" aria-expanded="false" hidden>
+                See Explanation
             </button>
-            <span>Need a hint?</span>
         </div>
 
         <div id="promotion-modal" role="dialog" aria-modal="true" aria-labelledby="promotion-title">
@@ -547,6 +603,7 @@
                 {
                     fen: "5Q2/k1p4R/ppq3p1/8/8/nP6/P1P3PP/K7 b - - 0 1",
                     playerColor: "b",
+                    explanation: "Simple mate in 1 puzzle. The knight covers b1, so the king can't move once the queen checks from c3.",
                     solution: [
                         "c6c3"
                     ]
@@ -555,6 +612,7 @@
                 {
                     fen: "8/1p4BP/6P1/p1P1K3/8/8/P1k5/5q2 b - - 0 1",
                     playerColor: "b",
+                    explanation: "Elementary skewer. The queen slides over to a1, skewering the king and bishop on g7. Once the bishop is captured, the pawns are also stopped.",
                     solution: [
                         "f1a1",
                         "e5e6",
@@ -565,6 +623,7 @@
                 {
                     fen: "4rk2/1bp3p1/5p2/p7/2B1rN2/1P4P1/P4P1P/3R2K1 w - - 0 1",
                     playerColor: "w",
+                    explanation: "The knight jumps from f4 to g6 with check. The knight check is forcing: Black must respond to the king threat, giving White the tempo needed to seize the initiative.",
                     solution: [
                         "f4g6"
                     ]
@@ -581,6 +640,7 @@
                 {
                     fen: "1R3b1r/4q1pp/p4p2/4p1k1/2Q4N/5P2/P5PP/6K1 b - - 0 1",
                     playerColor: "b",
+                    explanation: "The queen captures on c5 with check, drawing White's queen to c5. Black then recaptures with the bishop, and the rook swings to b8 to create a powerful attack against White's exposed king and back rank.",
                     solution: [
                         "e7c5",
                         "c4c5",
@@ -593,6 +653,7 @@
                 {
                     fen: "8/4B3/8/4k1Np/3p3P/1p4r1/1P6/2K5 w - - 0 1",
                     playerColor: "w",
+                    explanation: "The bishop moves to d6 with check, forcing the black king to capture it. White's knight then jumps to e4 with check, driving the king to d5; the final knight move to g3 attacks the rook on g3 and wins it.",
                     solution: [
                         "e7d6",
                         "e5d6",
@@ -605,6 +666,7 @@
                 {
                     fen: "3r4/1pN3k1/p2p1pp1/2pP3p/2P1P1bP/1P2K3/P7/6R1 w - - 0 27",
                     playerColor: "w",
+                    explanation: "The rook sacrifices itself on g4, pulling the h-pawn to g4. White's knight then jumps to e6 with check, exploiting the exposed king and the weakened dark squares to launch a decisive attack.",
                     solution: [
                         "g1g4",
                         "h5g4",
@@ -624,6 +686,7 @@
                 {
                     fen: "5K2/p3n3/P3kp2/2b5/2p2P2/2N5/P2RN2r/3R4 b - - 0 1",
                     playerColor: "b",
+                    explanation: "The knight jumps to g6 with check, forcing the white king to g8. Black's rook then invades h8, driving the king to g7; the bishop check on f8 keeps the king exposed, and the rook finishes by invading h6 with a decisive attack.",
                     solution: [
                         "e7g6",
                         "f8g8",
@@ -638,6 +701,7 @@
                 {
                     fen: "8/7p/6p1/4kpK1/7P/5P2/8/8 b - - 0 1",
                     playerColor: "b",
+                    explanation: "Black advances the f-pawn to f4, using the outside passer to force the white king away. The kings then escort their passed pawns forward; the final ...f3 creates a winning breakthrough because White cannot stop both passed pawns.",
                     solution: [
                         "f5f4",
                         "g5h6",
@@ -654,6 +718,7 @@
                 {
                     fen: "K1kb4/P1p3P1/2P5/8/8/8/8/8 w - - 0 1",
                     playerColor: "w",
+                    explanation: "Underpromote the g-pawn to a bishop instead of choosing a queen. The bishop controls the key promotion squares; after Black's bishop moves to f6, White shifts the new bishop to e6 and keeps the c-pawn's promotion threat alive.",
                     solution: [
                         "g7g8b",
                         "d8f6",
@@ -714,6 +779,9 @@
     const completionMessage = document.getElementById("completion-message");
     const promotionModal = document.getElementById("promotion-modal");
     const hintButton = document.getElementById("hint-button");
+    const hintPrompt = document.getElementById("hint-prompt");
+    const explanationButton = document.getElementById("explanation-button");
+    const puzzleExplanation = document.getElementById("puzzle-explanation");
     const promotionCancel = promotionModal.querySelector(".promotion-cancel");
     const promotionOptions = promotionModal.querySelectorAll(".promotion-option");
 
@@ -983,6 +1051,10 @@ hintButton.addEventListener("click", showHint);
     let currentSolutionIndex = 0;
 
     function handleBoardClick(event) {
+        if (puzzleCompleted) {
+            return;
+        }
+
         if (event.type === "mousedown" && event.button !== 0) {
                 return;
         }
@@ -1057,6 +1129,14 @@ hintButton.addEventListener("click", showHint);
         tierTitle.textContent = tier.title;
         progressElement.textContent =
             "Puzzle " + (currentPuzzleIndex + 1) + " of " + tier.puzzles.length;
+        boardWrapper.classList.remove("explanation-visible");
+        puzzleExplanation.hidden = true;
+        puzzleExplanation.textContent = "";
+        hintPrompt.hidden = false;
+        explanationButton.hidden = true;
+        explanationButton.textContent = "See Explanation";
+        explanationButton.setAttribute("aria-expanded", "false");
+        nextPuzzleButton.textContent = "Next Puzzle";
 
         if (board) {
             board.destroy();
@@ -1110,7 +1190,7 @@ hintButton.addEventListener("click", showHint);
 
         const puzzle = puzzleData[currentTier].puzzles[currentPuzzleIndex];
 
-        if (currentSolutionIndex >= puzzle.solution.length) {
+        if (puzzleCompleted || currentSolutionIndex >= puzzle.solution.length) {
             return false;
         }
 
@@ -1142,6 +1222,9 @@ hintButton.addEventListener("click", showHint);
 
 
     function finalizePlayerMove(source, target, promotion, fromDrag) {
+        if (puzzleCompleted) {
+            return "snapback";
+        }
 
         const puzzle = puzzleData[currentTier].puzzles[currentPuzzleIndex];
         const expectedMove = getExpectedMove();
@@ -1374,6 +1457,7 @@ hintButton.addEventListener("click", showHint);
     function finishPuzzle() {
 
         puzzleCompleted = true;
+        explanationButton.hidden = false;
 
         if (opponentMoveTimer !== null) {
             window.clearTimeout(opponentMoveTimer);
@@ -1399,11 +1483,10 @@ hintButton.addEventListener("click", showHint);
         We have completed the final puzzle
         of this tier.
         */
-
         completedTiers.add(currentTier);
-
+        completedTiers.add(currentTier);
         updateTierSelector();
-
+        updateTierSelector();
 
         /*
         Check whether ALL four tiers are completed.
@@ -1417,32 +1500,14 @@ hintButton.addEventListener("click", showHint);
 
 
         if (allCompleted) {
-
             showFinalCompletion();
-
             return;
         }
-
-
-        /*
-        Otherwise, show the dropdown.
-        */
 
         tierSelector.style.display = "block";
-
-        const nextTier = tierSelector.value;
-
-        if (nextTier !== currentTier && puzzleData[nextTier]) {
-            currentTier = nextTier;
-            currentPuzzleIndex = 0;
-            loadPuzzle();
-            return;
-        }
-
-        setStatus(
-            "Tier complete! Choose another difficulty.",
-            "correct"
-        );
+        nextPuzzleButton.textContent = "Next Category";
+        nextPuzzleButton.hidden = false;
+        setStatus("Tier complete! Continue to another difficulty when you are ready.", "correct");
     }
 
 
@@ -1539,18 +1604,6 @@ hintButton.addEventListener("click", showHint);
     */
 
     function showFinalCompletion() {
-
-        /*
-        Completely hide the puzzle interface.
-        */
-
-        puzzleContainer.style.display = "none";
-
-
-        /*
-        Show the CTA.
-        */
-
         completionMessage.style.display = "block";
     }
 
@@ -1572,13 +1625,73 @@ hintButton.addEventListener("click", showHint);
     nextPuzzleButton.addEventListener("click", function() {
         const tier = puzzleData[currentTier];
 
-        if (currentPuzzleIndex >= tier.puzzles.length - 1) {
+        if (currentPuzzleIndex < tier.puzzles.length - 1) {
+            currentPuzzleIndex++;
+            nextPuzzleButton.hidden = true;
+            loadPuzzle();
             return;
         }
 
-        currentPuzzleIndex++;
-        nextPuzzleButton.hidden = true;
-        loadPuzzle();
+        const nextTier = tierSelector.value;
+
+        if (!completedTiers.has(nextTier) && nextTier !== currentTier && puzzleData[nextTier]) {
+            currentTier = nextTier;
+            currentPuzzleIndex = 0;
+            tierSelector.style.display = "block";
+            loadPuzzle();
+        }
+    });
+
+    explanationButton.addEventListener("click", function() {
+        if (!puzzleCompleted) {
+            return;
+        }
+
+        const showExplanation = puzzleExplanation.hidden;
+        const previousBoardRect = boardWrapper.getBoundingClientRect();
+
+        if (showExplanation) {
+            const puzzle = puzzleData[currentTier].puzzles[currentPuzzleIndex];
+            puzzleExplanation.textContent = puzzle.explanation;
+            puzzleExplanation.hidden = false;
+            hintPrompt.hidden = true;
+            boardWrapper.classList.add("explanation-visible");
+            explanationButton.textContent = "Hide Explanation";
+            explanationButton.setAttribute("aria-expanded", "true");
+        } else {
+            puzzleExplanation.hidden = true;
+            hintPrompt.hidden = false;
+            boardWrapper.classList.remove("explanation-visible");
+            explanationButton.textContent = "See Explanation";
+            explanationButton.setAttribute("aria-expanded", "false");
+        }
+
+        boardWrapper.style.transformOrigin = showExplanation ? "right bottom" : "left top";
+        board.resize();
+
+        const nextBoardRect = boardWrapper.getBoundingClientRect();
+        const scaleX = previousBoardRect.width / nextBoardRect.width;
+        const scaleY = previousBoardRect.height / nextBoardRect.height;
+        const originX = showExplanation ? nextBoardRect.width : 0;
+        const originY = showExplanation ? nextBoardRect.height : 0;
+        const translateX = previousBoardRect.left - nextBoardRect.left - (1 - scaleX) * originX;
+        const translateY = previousBoardRect.top - nextBoardRect.top - (1 - scaleY) * originY;
+
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+            typeof boardWrapper.animate !== "function") {
+            return;
+        }
+
+        boardWrapper.animate([
+            {
+                transform: "translate(" + translateX + "px, " + translateY + "px) scale(" +
+                    scaleX + ", " + scaleY + ")"
+            },
+            { transform: "translate(0, 0) scale(1, 1)" }
+        ], {
+            duration: 400,
+            easing: "cubic-bezier(0.2, 0.7, 0.3, 1)"
+        });
     });
 
     /*
