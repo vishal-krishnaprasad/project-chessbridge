@@ -62,6 +62,16 @@
             overflow: hidden;
         }
 
+        .arrow-overlay {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            pointer-events: none;
+            z-index: 4;
+        }
+
         #board-wrapper.flash-incorrect::after {
             content: "";
             position: absolute;
@@ -623,7 +633,7 @@
                 {
                     fen: "4rk2/1bp3p1/5p2/p7/2B1rN2/1P4P1/P4P1P/3R2K1 w - - 0 1",
                     playerColor: "w",
-                    explanation: "The knight jumps from f4 to g6 with check. The knight check is forcing: Black must respond to the king threat, giving White the tempo needed to seize the initiative.",
+                    explanation: "Notice the bishop on c4. It covers the a2-g8 diagonal. When the knight lands on g6, it also covers the only other escape square, e7. Basic mate in 1.",
                     solution: [
                         "f4g6"
                     ]
@@ -775,6 +785,8 @@
     const statusElement = document.getElementById("status");
     const progressElement = document.getElementById("progress");
     const boardWrapper = document.getElementById("board-wrapper");
+    const arrowOverlay = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    const drawnArrows = new Map();
     const nextPuzzleButton = document.getElementById("next-puzzle-button");
     const completionMessage = document.getElementById("completion-message");
     const promotionModal = document.getElementById("promotion-modal");
@@ -784,6 +796,11 @@
     const puzzleExplanation = document.getElementById("puzzle-explanation");
     const promotionCancel = promotionModal.querySelector(".promotion-cancel");
     const promotionOptions = promotionModal.querySelectorAll(".promotion-option");
+    let arrowGestureStart = null;
+
+    arrowOverlay.classList.add("arrow-overlay");
+    arrowOverlay.setAttribute("aria-hidden", "true");
+    boardWrapper.appendChild(arrowOverlay);
 
     let pendingPromotion = null;
     let opponentMoveTimer = null;
@@ -873,6 +890,134 @@
             square.classList.remove("hint-square");
         });
     }
+
+    function renderArrows() {
+        const wrapperRect = boardWrapper.getBoundingClientRect();
+        const boardRect = document.getElementById("board").getBoundingClientRect();
+        const size = Math.min(boardRect.width, boardRect.height) / 8;
+
+        arrowOverlay.setAttribute("viewBox", "0 0 " + wrapperRect.width + " " + wrapperRect.height);
+        arrowOverlay.replaceChildren();
+
+        if (!size) {
+            return;
+        }
+
+        drawnArrows.forEach(function(arrow) {
+            const source = document.querySelector(
+                '#board .square-55d63[data-square="' + arrow.from + '"]'
+            );
+            const target = document.querySelector(
+                '#board .square-55d63[data-square="' + arrow.to + '"]'
+            );
+
+            if (!source || !target) {
+                return;
+            }
+
+            const sourceRect = source.getBoundingClientRect();
+            const targetRect = target.getBoundingClientRect();
+            const startX = sourceRect.left + sourceRect.width / 2 - wrapperRect.left;
+            const startY = sourceRect.top + sourceRect.height / 2 - wrapperRect.top;
+            const endX = targetRect.left + targetRect.width / 2 - wrapperRect.left;
+            const endY = targetRect.top + targetRect.height / 2 - wrapperRect.top;
+            const length = Math.hypot(endX - startX, endY - startY);
+
+            if (!length) {
+                return;
+            }
+
+            const unitX = (endX - startX) / length;
+            const unitY = (endY - startY) / length;
+            const perpendicularX = -unitY;
+            const perpendicularY = unitX;
+            const shaftWidth = size * 0.2;
+            const headWidth = size * 0.52;
+            const headLength = Math.min(size * 0.42, length * 0.45);
+            const baseX = endX - unitX * headLength;
+            const baseY = endY - unitY * headLength;
+            const points = [
+                [startX + perpendicularX * shaftWidth / 2, startY + perpendicularY * shaftWidth / 2],
+                [baseX + perpendicularX * shaftWidth / 2, baseY + perpendicularY * shaftWidth / 2],
+                [baseX + perpendicularX * headWidth / 2, baseY + perpendicularY * headWidth / 2],
+                [endX, endY],
+                [baseX - perpendicularX * headWidth / 2, baseY - perpendicularY * headWidth / 2],
+                [baseX - perpendicularX * shaftWidth / 2, baseY - perpendicularY * shaftWidth / 2],
+                [startX - perpendicularX * shaftWidth / 2, startY - perpendicularY * shaftWidth / 2]
+            ];
+            const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+            polygon.setAttribute("points", points.map(function(point) {
+                return point[0] + "," + point[1];
+            }).join(" "));
+            polygon.setAttribute("fill", "rgba(40, 140, 50, 0.68)");
+            polygon.setAttribute("stroke", "rgba(20, 80, 30, 0.25)");
+            polygon.setAttribute("stroke-width", "1");
+            arrowOverlay.appendChild(polygon);
+        });
+    }
+
+    function getSquareAtPoint(x, y) {
+        const element = document.elementFromPoint(x, y);
+        const square = element && element.closest("#board .square-55d63");
+        return square && boardWrapper.contains(square) ? square.dataset.square : null;
+    }
+
+    function handleArrowPointerDown(event) {
+        if (event.button !== 2) {
+            return;
+        }
+
+        const square = getSquareAtPoint(event.clientX, event.clientY);
+
+        if (!square) {
+            return;
+        }
+
+        event.preventDefault();
+        arrowGestureStart = { from: square, pointerId: event.pointerId };
+    }
+
+    function handleArrowPointerUp(event) {
+        if (!arrowGestureStart || event.pointerId !== arrowGestureStart.pointerId) {
+            return;
+        }
+
+        event.preventDefault();
+        const to = getSquareAtPoint(event.clientX, event.clientY);
+        const from = arrowGestureStart.from;
+        arrowGestureStart = null;
+
+        if (!to || to === from) {
+            return;
+        }
+
+        const key = from + to;
+
+        if (drawnArrows.has(key)) {
+            drawnArrows.delete(key);
+        } else {
+            drawnArrows.set(key, { from: from, to: to });
+        }
+
+        renderArrows();
+    }
+
+    boardWrapper.addEventListener("pointerdown", handleArrowPointerDown);
+    document.addEventListener("pointermove", function(event) {
+        if (arrowGestureStart && event.pointerId === arrowGestureStart.pointerId) {
+            event.preventDefault();
+        }
+    });
+    document.addEventListener("pointerup", handleArrowPointerUp);
+    document.addEventListener("pointercancel", function(event) {
+        if (arrowGestureStart && event.pointerId === arrowGestureStart.pointerId) {
+            arrowGestureStart = null;
+        }
+    });
+    boardWrapper.addEventListener("contextmenu", function(event) {
+        event.preventDefault();
+    });
+    window.addEventListener("resize", renderArrows);
 
     function resetHint() {
         clearHintHighlight();
@@ -1051,10 +1196,6 @@ hintButton.addEventListener("click", showHint);
     let currentSolutionIndex = 0;
 
     function handleBoardClick(event) {
-        if (puzzleCompleted) {
-            return;
-        }
-
         if (event.type === "mousedown" && event.button !== 0) {
                 return;
         }
@@ -1068,6 +1209,15 @@ hintButton.addEventListener("click", showHint);
         const square = squareElement.dataset.square;
 
         if (!square || !game) {
+            return;
+        }
+
+        if (game.get(square) && drawnArrows.size > 0) {
+            drawnArrows.clear();
+            renderArrows();
+        }
+
+        if (puzzleCompleted) {
             return;
         }
 
@@ -1121,8 +1271,11 @@ hintButton.addEventListener("click", showHint);
 
         currentSolutionIndex = 0;
         closePromotionSelector();
+        drawnArrows.clear();
+        renderArrows();
 
         const orientation = puzzle.playerColor === "b" ? "black" : "white";
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
         updatePromotionOptions(puzzle.playerColor);
 
@@ -1147,9 +1300,9 @@ hintButton.addEventListener("click", showHint);
             orientation: orientation,
             draggable: true,
             appearSpeed: 0,
-            moveSpeed: 0,
-            snapbackSpeed: 250,
-            snapSpeed: 0,
+            moveSpeed: reduceMotion ? 0 : 250,
+            snapbackSpeed: reduceMotion ? 0 : 250,
+            snapSpeed: reduceMotion ? 0 : 180,
             pieceTheme: "https://cdn.jsdelivr.net/gh/oakmac/chessboardjs@1.0.0/website/img/chesspieces/wikipedia/{piece}.png",
             onDragStart: onDragStart,
             onDrop: onDrop,
@@ -1268,7 +1421,7 @@ hintButton.addEventListener("click", showHint);
         hintButton.disabled = false;
 
         if (!fromDrag) {
-            board.position(game.fen(), false);
+            board.position(game.fen());
         }
         currentSolutionIndex++;
 
@@ -1409,7 +1562,7 @@ hintButton.addEventListener("click", showHint);
         Update the physical board.
         */
 
-        board.position(game.fen(), false);
+        board.position(game.fen());
 
 
         /*
